@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.ExamResultMapper" >
+  <resultMap id="BaseResultMap" type="entity.ExamResult" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="point" property="point" jdbcType="DOUBLE" />
+    <result column="time" property="time" jdbcType="DATE" />
+    <result column="exam_title" property="examTitle" jdbcType="VARCHAR" />
+    <result column="fk_exam" property="fkExam" jdbcType="INTEGER" />
+    <result column="fk_student" property="fkStudent" jdbcType="INTEGER" />
+    <result column="del_flag" property="delFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, point, time, exam_title, fk_exam, fk_student, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_result
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from exam_result
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.ExamResult" >
+    insert into exam_result (id, point, time, 
+      exam_title, fk_exam, fk_student, 
+      del_flag)
+    values (#{id,jdbcType=INTEGER}, #{point,jdbcType=DOUBLE}, #{time,jdbcType=DATE}, 
+      #{examTitle,jdbcType=VARCHAR}, #{fkExam,jdbcType=INTEGER}, #{fkStudent,jdbcType=INTEGER}, 
+      #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.ExamResult" >
+    insert into exam_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="point != null" >
+        point,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="examTitle != null" >
+        exam_title,
+      </if>
+      <if test="fkExam != null" >
+        fk_exam,
+      </if>
+      <if test="fkStudent != null" >
+        fk_student,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="point != null" >
+        #{point,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=DATE},
+      </if>
+      <if test="examTitle != null" >
+        #{examTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="fkExam != null" >
+        #{fkExam,jdbcType=INTEGER},
+      </if>
+      <if test="fkStudent != null" >
+        #{fkStudent,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.ExamResult" >
+    update exam_result
+    <set >
+      <if test="point != null" >
+        point = #{point,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=DATE},
+      </if>
+      <if test="examTitle != null" >
+        exam_title = #{examTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="fkExam != null" >
+        fk_exam = #{fkExam,jdbcType=INTEGER},
+      </if>
+      <if test="fkStudent != null" >
+        fk_student = #{fkStudent,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.ExamResult" >
+    update exam_result
+    set point = #{point,jdbcType=DOUBLE},
+      time = #{time,jdbcType=DATE},
+      exam_title = #{examTitle,jdbcType=VARCHAR},
+      fk_exam = #{fkExam,jdbcType=INTEGER},
+      fk_student = #{fkStudent,jdbcType=INTEGER},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!---->
+  <select id="selectByFkExamAndFkStudent" resultMap="BaseResultMap" parameterType="examResult" >
+    select
+    <include refid="Base_Column_List" />
+    from exam_result
+    where fk_exam = #{fkExam} and fk_student = #{fkStudent}
+  </select>
+  <!--根据试卷名称查询考试记录-->
+  <select id="selectByFkExamTitle" resultType="map" parameterType="map" >
+    select
+    id, point, DATE_FORMAT(time,'%Y-%m-%d') time,exam_title examTitle,fk_exam fkExam,fk_student fkStudent
+    from exam_result
+    where del_flag = 0 and fk_student=#{studentId}
+    <if test="title != null and title != '' ">
+      and exam_title like #{title}
+    </if>
+    order by id desc
+  </select>
+</mapper>

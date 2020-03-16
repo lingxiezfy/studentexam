@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--日志-->
+        <setting name="logImpl" value="LOG4J"/>
+        <!--自动驼峰-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--主键自动增长-->
+        <setting name="useGeneratedKeys" value="true"/>
+    </settings>
+
+    <!-- pageHelper分页插件 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="dialect" value="mysql"/> <!--方言-->
+            <property name="offsetAsPageNum" value="true"/>
+            <!-- rowBoundsWithCount设置为true时，使用 RowBounds 分页会进行 count 查询。 -->
+            <property name="rowBoundsWithCount" value="true"/>
+            <!-- pageSizeZero 为 true， 当 pageSize=0 或者 RowBounds.limit = 0 就会查询出全部的结果 -->
+            <property name="pageSizeZero" value="true"/>
+
+            <!-- reasonable 为 true，这时如果 pageNum<=0 会查询第一页，如果 pageNum>总页数 会查询最后一页 -->
+            <property name="reasonable" value="true"/>          <!--最后两行必要，上面的看情况使用-->
+            <property name="returnPageInfo" value="check"/>
+        </plugin>
+    </plugins>
+</configuration>

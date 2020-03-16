@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.QuestionJudgeMapper" >
+  <resultMap id="BaseResultMap" type="entity.QuestionJudge" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="DOUBLE" />
+    <result column="fk_teacher" property="fkTeacher" jdbcType="INTEGER" />
+    <result column="fk_qtype" property="fkQtype" jdbcType="INTEGER" />
+    <result column="del_flag" property="delFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, answer, score, fk_teacher, fk_qtype, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from question_judge
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from question_judge
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.QuestionJudge" >
+    insert into question_judge (id, title, answer, 
+      score, fk_teacher, fk_qtype, 
+      del_flag)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, 
+      #{score,jdbcType=DOUBLE}, #{fkTeacher,jdbcType=INTEGER}, #{fkQtype,jdbcType=INTEGER}, 
+      #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.QuestionJudge" >
+    insert into question_judge
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="answer != null" >
+        answer,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="fkTeacher != null" >
+        fk_teacher,
+      </if>
+      <if test="fkQtype != null" >
+        fk_qtype,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=DOUBLE},
+      </if>
+      <if test="fkTeacher != null" >
+        #{fkTeacher,jdbcType=INTEGER},
+      </if>
+      <if test="fkQtype != null" >
+        #{fkQtype,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.QuestionJudge" >
+    update question_judge
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=DOUBLE},
+      </if>
+      <if test="fkTeacher != null" >
+        fk_teacher = #{fkTeacher,jdbcType=INTEGER},
+      </if>
+      <if test="fkQtype != null" >
+        fk_qtype = #{fkQtype,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.QuestionJudge" >
+    update question_judge
+    set title = #{title,jdbcType=VARCHAR},
+      answer = #{answer,jdbcType=VARCHAR},
+      score = #{score,jdbcType=DOUBLE},
+      fk_teacher = #{fkTeacher,jdbcType=INTEGER},
+      fk_qtype = #{fkQtype,jdbcType=INTEGER},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--根据题目查询判断题-->
+  <select id="selectByTitle" resultMap="BaseResultMap" parameterType="string" >
+    select
+    <include refid="Base_Column_List"/>
+    from question_judge
+    where title = #{title}
+  </select>
+  <!--根据条件查询所有的判断题-->
+  <select id="selectAllBySelective" resultType="map" parameterType="map" >
+    select
+    t1.id, t1.title, t1.score, t2.type qtype,t3.realname teacherName
+    from question_judge t1
+    left join question_type t2 on t1.fk_qtype = t2.id
+    left join teacher t3 on t1.fk_teacher = t3.id
+    where t1.del_flag = 0
+    <if test="title != null and title != '' ">
+      and t1.title like #{title}
+    </if>
+    <if test="qtype != null">
+      and t1.fk_qtype = #{qtype}
+    </if>
+    order by t1.id desc
+  </select>
+  <!--除了自身是否还有相同的题目-->
+  <select id="selectByTitleWithoutSelf" resultMap="BaseResultMap" parameterType="questionSingle" >
+    select
+    <include refid="Base_Column_List"/>
+    from question_judge
+    where title = #{title} and id &lt;&gt; #{id}
+  </select>
+  <!--ID查询判断-->
+  <select id="selectAllByExamId" resultMap="BaseResultMap" parameterType="int" >
+    select
+     t1.id, t1.title, t1.answer, t1.score, t1.fk_teacher, t1.fk_qtype, t1.del_flag
+    from question_judge t1
+    left join exam_questions t2 on t1.id = t2.fk_question and  t2.fk_qtype = 3 and t2.del_flag = 0
+    where t2.fk_exam = #{examId}
+  </select>
+  <!--ID所有判断-->
+  <select id="selectByIDs" resultType="questionJudge" >
+    select
+    <include refid="Base_Column_List"/>
+    from question_judge
+    where id in
+    <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
+</mapper>

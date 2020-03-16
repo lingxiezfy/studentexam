@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.StudentMapper" >
+  <resultMap id="BaseResultMap" type="entity.Student" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="fk_clazz" property="fkClazz" jdbcType="INTEGER" />
+    <result column="modified" property="modified" jdbcType="TINYINT" />
+    <result column="del_flag" property="delFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username, password, realname, fk_clazz, modified, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from student
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.Student" >
+    insert into student (id, username, password, 
+      realname, fk_clazz, modified, 
+      del_flag)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{fkClazz,jdbcType=INTEGER}, #{modified,jdbcType=TINYINT}, 
+      #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.Student" >
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="fkClazz != null" >
+        fk_clazz,
+      </if>
+      <if test="modified != null" >
+        modified,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="fkClazz != null" >
+        #{fkClazz,jdbcType=INTEGER},
+      </if>
+      <if test="modified != null" >
+        #{modified,jdbcType=TINYINT},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.Student" >
+    update student
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="fkClazz != null" >
+        fk_clazz = #{fkClazz,jdbcType=INTEGER},
+      </if>
+      <if test="modified != null" >
+        modified = #{modified,jdbcType=TINYINT},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.Student" >
+    update student
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      realname = #{realname,jdbcType=VARCHAR},
+      fk_clazz = #{fkClazz,jdbcType=INTEGER},
+      modified = #{modified,jdbcType=TINYINT},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--根据用户名和密码查询学生信息 9.10-->
+  <select id="selectByUsernameAndPassword" resultType="student" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    from student
+    where username = #{username} and password = #{password}
+  </select>
+  <!--根据条件查询学生列表-->
+  <select id="selectAllBySelective" resultType="map" parameterType="map">
+    select
+    t1.id, t1.username, t1.realname, t2.cno, t3.name gradeName, t4.name majorName
+    from student t1
+    left join clazz t2 on t1.fk_clazz = t2.id
+    left join grade t3 on t2.fk_grade = t3.id
+    left join major t4 on t2.fk_major = t4.id
+    where t1.del_flag = 0
+    <if test="gradeName != null and gradeName != '' ">
+      and t3.name like #{gradeName}
+    </if>
+    <if test="majorName != null and majorName != '' ">
+      and t4.name like #{majorName}
+    </if>
+    <if test="realname != null and realname != '' ">
+      and t1.realname like #{realname}
+    </if>
+    order by id desc
+  </select>
+  <!--根据用户名查询用户信息-->
+  <select id="selectByUsername" resultType="student" parameterType="string">
+    select
+    <include refid="Base_Column_List"/>
+    from student
+    where username = #{username}
+  </select>
+  <!-- &lt;&gt表示不等于，等价于<> -->
+  <select id="selectByUsernameWithoutSelf" resultType="student" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    from student
+    where username = #{username} and id &lt;&gt; #{id}
+  </select>
+</mapper>

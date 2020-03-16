@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.ExamMapper" >
+  <resultMap id="BaseResultMap" type="entity.Exam" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="time_limit" property="timeLimit" jdbcType="INTEGER" />
+    <result column="end_time" property="endTime" jdbcType="DATE" />
+    <result column="fk_status" property="fkStatus" jdbcType="INTEGER" />
+    <result column="fk_teacher" property="fkTeacher" jdbcType="INTEGER" />
+    <result column="single_points" property="singlePoints" jdbcType="DOUBLE" />
+    <result column="multi_points" property="multiPoints" jdbcType="DOUBLE" />
+    <result column="judge_points" property="judgePoints" jdbcType="DOUBLE" />
+    <result column="total_points" property="totalPoints" jdbcType="DOUBLE" />
+    <result column="del_flag" property="delFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, time_limit, end_time, fk_status, fk_teacher, single_points, multi_points, 
+    judge_points, total_points, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from exam
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.Exam" >
+    insert into exam (id, title, time_limit, 
+      end_time, fk_status, fk_teacher, 
+      single_points, multi_points, judge_points, 
+      total_points, del_flag)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{timeLimit,jdbcType=INTEGER}, 
+      #{endTime,jdbcType=DATE}, #{fkStatus,jdbcType=INTEGER}, #{fkTeacher,jdbcType=INTEGER}, 
+      #{singlePoints,jdbcType=DOUBLE}, #{multiPoints,jdbcType=DOUBLE}, #{judgePoints,jdbcType=DOUBLE}, 
+      #{totalPoints,jdbcType=DOUBLE}, #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.Exam" >
+    insert into exam
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="timeLimit != null" >
+        time_limit,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="fkStatus != null" >
+        fk_status,
+      </if>
+      <if test="fkTeacher != null" >
+        fk_teacher,
+      </if>
+      <if test="singlePoints != null" >
+        single_points,
+      </if>
+      <if test="multiPoints != null" >
+        multi_points,
+      </if>
+      <if test="judgePoints != null" >
+        judge_points,
+      </if>
+      <if test="totalPoints != null" >
+        total_points,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLimit != null" >
+        #{timeLimit,jdbcType=INTEGER},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=DATE},
+      </if>
+      <if test="fkStatus != null" >
+        #{fkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="fkTeacher != null" >
+        #{fkTeacher,jdbcType=INTEGER},
+      </if>
+      <if test="singlePoints != null" >
+        #{singlePoints,jdbcType=DOUBLE},
+      </if>
+      <if test="multiPoints != null" >
+        #{multiPoints,jdbcType=DOUBLE},
+      </if>
+      <if test="judgePoints != null" >
+        #{judgePoints,jdbcType=DOUBLE},
+      </if>
+      <if test="totalPoints != null" >
+        #{totalPoints,jdbcType=DOUBLE},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.Exam" >
+    update exam
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLimit != null" >
+        time_limit = #{timeLimit,jdbcType=INTEGER},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=DATE},
+      </if>
+      <if test="fkStatus != null" >
+        fk_status = #{fkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="fkTeacher != null" >
+        fk_teacher = #{fkTeacher,jdbcType=INTEGER},
+      </if>
+      <if test="singlePoints != null" >
+        single_points = #{singlePoints,jdbcType=DOUBLE},
+      </if>
+      <if test="multiPoints != null" >
+        multi_points = #{multiPoints,jdbcType=DOUBLE},
+      </if>
+      <if test="judgePoints != null" >
+        judge_points = #{judgePoints,jdbcType=DOUBLE},
+      </if>
+      <if test="totalPoints != null" >
+        total_points = #{totalPoints,jdbcType=DOUBLE},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.Exam" >
+    update exam
+    set title = #{title,jdbcType=VARCHAR},
+      time_limit = #{timeLimit,jdbcType=INTEGER},
+      end_time = #{endTime,jdbcType=DATE},
+      fk_status = #{fkStatus,jdbcType=INTEGER},
+      fk_teacher = #{fkTeacher,jdbcType=INTEGER},
+      single_points = #{singlePoints,jdbcType=DOUBLE},
+      multi_points = #{multiPoints,jdbcType=DOUBLE},
+      judge_points = #{judgePoints,jdbcType=DOUBLE},
+      total_points = #{totalPoints,jdbcType=DOUBLE},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+   <!--根据试卷名称查询试卷信息-->
+    <select id="selectByTitle" resultMap="BaseResultMap" parameterType="string" >
+        select
+        <include refid="Base_Column_List" />
+        from exam
+        where title = #{title}
+    </select>
+  <!--根据条件查询所有试题信息-->
+  <select id="selectAllBySelective" resultMap="BaseResultMap" resultType="exam" parameterType="string" >
+    select
+    <include refid="Base_Column_List" />
+    from exam
+    where del_flag = 0
+    <if test="value != null and value != '' ">
+      and title like '%${value}%'
+    </if>
+  </select>
+  <!--判断试卷名称是否已经存在-->
+  <select id="selectByTitleWithoutSelf" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from exam
+    where title = #{title} and id &lt;&gt; #{id} and del_flag = 0
+  </select>
+  <!--根据学生ID查询当前需要参加的考试-->
+  <select id="selectByStudent" resultType="map" parameterType="int" >
+    select
+    t1.id, t1.title, t1.time_limit timeLimit, DATE_FORMAT(t1.end_time,'%Y-%m-%d') endTime ,t5.status
+    from exam t1
+    left join exam_clazz t2 on t1.id = t2.fk_exam
+    left join clazz t3 on t2.fk_clazz = t3.id
+    left join student t4 on t4.fk_clazz = t3.id
+    left join exam_status t5 on t1.fk_status = t5.id
+    left join exam_result t6 on t1.id = t6.fk_exam and t6.fk_student = #{studentId}
+    where t4.id = #{studentId} and t1.del_flag =0 and t1.fk_status = 3 and DATE_FORMAT(t1.end_time,'%Y-%m-%d') >= DATE_FORMAT(now(),'%Y-%m-%d') and t6.fk_student is null
+  </select>
+</mapper>

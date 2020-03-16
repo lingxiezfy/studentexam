@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.WorkMapper">
+  <resultMap id="BaseResultMap" type="entity.Work">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="time_limit" jdbcType="INTEGER" property="timeLimit" />
+    <result column="end_time" jdbcType="DATE" property="endTime" />
+    <result column="fk_status" jdbcType="INTEGER" property="fkStatus" />
+    <result column="fk_teacher" jdbcType="INTEGER" property="fkTeacher" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, content, time_limit, end_time, fk_status, fk_teacher, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from work
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from work
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.Work">
+    insert into work (id, title, content, 
+      time_limit, end_time, fk_status, 
+      fk_teacher, del_flag)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{timeLimit,jdbcType=INTEGER}, #{endTime,jdbcType=DATE}, #{fkStatus,jdbcType=INTEGER}, 
+      #{fkTeacher,jdbcType=INTEGER}, #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.Work">
+    insert into work
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="timeLimit != null">
+        time_limit,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="fkStatus != null">
+        fk_status,
+      </if>
+      <if test="fkTeacher != null">
+        fk_teacher,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLimit != null">
+        #{timeLimit,jdbcType=INTEGER},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=DATE},
+      </if>
+      <if test="fkStatus != null">
+        #{fkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="fkTeacher != null">
+        #{fkTeacher,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.Work">
+    update work
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLimit != null">
+        time_limit = #{timeLimit,jdbcType=INTEGER},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=DATE},
+      </if>
+      <if test="fkStatus != null">
+        fk_status = #{fkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="fkTeacher != null">
+        fk_teacher = #{fkTeacher,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.Work">
+    update work
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      time_limit = #{timeLimit,jdbcType=INTEGER},
+      end_time = #{endTime,jdbcType=DATE},
+      fk_status = #{fkStatus,jdbcType=INTEGER},
+      fk_teacher = #{fkTeacher,jdbcType=INTEGER},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--根据作业名称查询作业信息-->
+  <select id="selectByTitle" resultMap="BaseResultMap" parameterType="string" >
+    select
+    <include refid="Base_Column_List" />
+    from work
+    where title = #{title}
+  </select>
+  <!--根据条件查询所有作业信息-->
+  <select id="selectAllBySelective" resultMap="BaseResultMap" resultType="work" parameterType="string" >
+    select
+    <include refid="Base_Column_List" />
+    from work
+    where del_flag = 0
+    <if test="value != null and value != '' ">
+      and title like '%${value}%'
+    </if>
+  </select>
+  <!--判断作业名称是否已经存在-->
+  <select id="selectByTitleWithoutSelf" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from work
+    where title = #{title} and id &lt;&gt; #{id} and del_flag = 0
+  </select>
+  <!--根据学生ID查询当前需要参加的课堂练习-->
+  <select id="selectByStudent" resultType="map" parameterType="int" >
+    select
+    t1.id, t1.title, t1.time_limit timeLimit, DATE_FORMAT(t1.end_time,'%Y-%m-%d') endTime ,t5.status
+    from work t1
+    left join work_clazz t2 on t1.id = t2.fk_work
+    left join clazz t3 on t2.fk_clazz = t3.id
+    left join student t4 on t4.fk_clazz = t3.id
+    left join work_status t5 on t1.fk_status = t5.id
+    left join work_submit t6 on t1.id = t6.fk_work and t6.fk_student = #{studentId}
+    where t4.id = #{studentId} and t1.del_flag =0 and t1.fk_status = 3 and DATE_FORMAT(t1.end_time,'%Y-%m-%d') >= DATE_FORMAT(now(),'%Y-%m-%d') and t6.fk_student is null
+  </select>
+</mapper>

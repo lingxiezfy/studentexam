@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.WorkClazzMapper" >
+  <resultMap id="BaseResultMap" type="entity.WorkClazz" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="fk_work" property="fkWork" jdbcType="INTEGER" />
+    <result column="fk_clazz" property="fkClazz" jdbcType="INTEGER" />
+    <result column="del_flag" property="delFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, fk_work, fk_clazz, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from work_clazz
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from work_clazz
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.WorkClazz" >
+    insert into work_clazz (id, fk_work, fk_clazz, 
+      del_flag)
+    values (#{id,jdbcType=INTEGER}, #{fkWork,jdbcType=INTEGER}, #{fkClazz,jdbcType=INTEGER}, 
+      #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.WorkClazz" >
+    insert into work_clazz
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fkWork != null" >
+        fk_work,
+      </if>
+      <if test="fkClazz != null" >
+        fk_clazz,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fkWork != null" >
+        #{fkWork,jdbcType=INTEGER},
+      </if>
+      <if test="fkClazz != null" >
+        #{fkClazz,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.WorkClazz" >
+    update work_clazz
+    <set >
+      <if test="fkWork != null" >
+        fk_work = #{fkWork,jdbcType=INTEGER},
+      </if>
+      <if test="fkClazz != null" >
+        fk_clazz = #{fkClazz,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=TINYINT},
+  </if>
+</set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.WorkClazz" >
+    update work_clazz
+    set fk_work = #{fkWork,jdbcType=INTEGER},
+      fk_clazz = #{fkClazz,jdbcType=INTEGER},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--根据作业ID查询关联的班级列表-->
+  <select id="selectByFkWork" resultType="map" parameterType="java.lang.Integer" >
+    select
+    t1.id, t1.fk_work, t1.del_flag,t1.fk_clazz, t2.cno, t3.name gradeName, t4.name majorName
+    from work_clazz t1
+    left join clazz t2 on t1.fk_clazz = t2.id
+    left join grade t3 on t2.fk_grade = t3.id
+    left join major t4 on t2.fk_major = t4.id
+    where t1.fk_work = #{fkWork}
+  </select>
+  <!--根据作业ID和班级ID查询关联记录-->
+  <select id="selectByFkWorkAndFkClazz" resultMap="BaseResultMap" parameterType="workClazz" >
+    select
+    <include refid="Base_Column_List" />
+    from work_clazz
+    where fk_work = #{fkWork} and fk_clazz = #{fkClazz}
+  </select>
+</mapper>

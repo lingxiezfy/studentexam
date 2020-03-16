@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.ExamResultQuestionMapper" >
+  <resultMap id="BaseResultMap" type="entity.ExamResultQuestion" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="is_right" property="isRight" jdbcType="BIT" />
+    <result column="wrong_answer" property="wrongAnswer" jdbcType="VARCHAR" />
+    <result column="fk_exam_result" property="fkExamResult" jdbcType="INTEGER" />
+    <result column="fk_question" property="fkQuestion" jdbcType="INTEGER" />
+    <result column="fk_qtype" property="fkQtype" jdbcType="INTEGER" />
+    <result column="del_flag" property="delFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, is_right, wrong_answer, fk_exam_result, fk_question, fk_qtype, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from exam_result_question
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from exam_result_question
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.ExamResultQuestion" >
+    insert into exam_result_question (id, is_right, wrong_answer, 
+      fk_exam_result, fk_question, fk_qtype, 
+      del_flag)
+    values (#{id,jdbcType=INTEGER}, #{isRight,jdbcType=BIT}, #{wrongAnswer,jdbcType=VARCHAR}, 
+      #{fkExamResult,jdbcType=INTEGER}, #{fkQuestion,jdbcType=INTEGER}, #{fkQtype,jdbcType=INTEGER}, 
+      #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.ExamResultQuestion" >
+    insert into exam_result_question
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="isRight != null" >
+        is_right,
+      </if>
+      <if test="wrongAnswer != null" >
+        wrong_answer,
+      </if>
+      <if test="fkExamResult != null" >
+        fk_exam_result,
+      </if>
+      <if test="fkQuestion != null" >
+        fk_question,
+      </if>
+      <if test="fkQtype != null" >
+        fk_qtype,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="isRight != null" >
+        #{isRight,jdbcType=BIT},
+      </if>
+      <if test="wrongAnswer != null" >
+        #{wrongAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="fkExamResult != null" >
+        #{fkExamResult,jdbcType=INTEGER},
+      </if>
+      <if test="fkQuestion != null" >
+        #{fkQuestion,jdbcType=INTEGER},
+      </if>
+      <if test="fkQtype != null" >
+        #{fkQtype,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.ExamResultQuestion" >
+    update exam_result_question
+    <set >
+      <if test="isRight != null" >
+        is_right = #{isRight,jdbcType=BIT},
+      </if>
+      <if test="wrongAnswer != null" >
+        wrong_answer = #{wrongAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="fkExamResult != null" >
+        fk_exam_result = #{fkExamResult,jdbcType=INTEGER},
+      </if>
+      <if test="fkQuestion != null" >
+        fk_question = #{fkQuestion,jdbcType=INTEGER},
+      </if>
+      <if test="fkQtype != null" >
+        fk_qtype = #{fkQtype,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.ExamResultQuestion" >
+    update exam_result_question
+    set is_right = #{isRight,jdbcType=BIT},
+      wrong_answer = #{wrongAnswer,jdbcType=VARCHAR},
+      fk_exam_result = #{fkExamResult,jdbcType=INTEGER},
+      fk_question = #{fkQuestion,jdbcType=INTEGER},
+      fk_qtype = #{fkQtype,jdbcType=INTEGER},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--查询考试结果及正确答案-->
+  <select id="selectByResultId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from exam_result_question
+    where fk_exam_result = #{id} and del_flag = 0
+  </select>
+</mapper>

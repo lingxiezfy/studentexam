@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.ClazzMapper" >
+  <resultMap id="BaseResultMap" type="entity.Clazz" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cno" property="cno" jdbcType="INTEGER" />
+    <result column="fk_grade" property="fkGrade" jdbcType="INTEGER" />
+    <result column="fk_major" property="fkMajor" jdbcType="INTEGER" />
+    <result column="del_flag" property="delFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cno, fk_grade, fk_major, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from clazz
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from clazz
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.Clazz" >
+    insert into clazz (id, cno, fk_grade, 
+      fk_major, del_flag)
+    values (#{id,jdbcType=INTEGER}, #{cno,jdbcType=INTEGER}, #{fkGrade,jdbcType=INTEGER}, 
+      #{fkMajor,jdbcType=INTEGER}, #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.Clazz" >
+    insert into clazz
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cno != null" >
+        cno,
+      </if>
+      <if test="fkGrade != null" >
+        fk_grade,
+      </if>
+      <if test="fkMajor != null" >
+        fk_major,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cno != null" >
+        #{cno,jdbcType=INTEGER},
+      </if>
+      <if test="fkGrade != null" >
+        #{fkGrade,jdbcType=INTEGER},
+      </if>
+      <if test="fkMajor != null" >
+        #{fkMajor,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.Clazz" >
+    update clazz
+    <set >
+      <if test="cno != null" >
+        cno = #{cno,jdbcType=INTEGER},
+      </if>
+      <if test="fkGrade != null" >
+        fk_grade = #{fkGrade,jdbcType=INTEGER},
+      </if>
+      <if test="fkMajor != null" >
+        fk_major = #{fkMajor,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.Clazz" >
+    update clazz
+    set cno = #{cno,jdbcType=INTEGER},
+      fk_grade = #{fkGrade,jdbcType=INTEGER},
+      fk_major = #{fkMajor,jdbcType=INTEGER},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--根据年级显示信息-->
+  <select id="selectAllByGradeAndMajor" resultType="map" parameterType="map" >
+    select
+    t1.id, t1.cno, t1.fk_grade, t1.fk_major, t2.name gradeName, t3.name majorName
+    from clazz t1,grade t2,major t3
+    where t1.fk_grade = t2.id and t1.fk_major = t3.id and t1.del_flag = 0
+    <if test="gradeName != null and gradeName != '' ">
+      and t2.name like #{gradeName}
+    </if>
+    <if test="majorName != null and majorName != '' ">
+      and t3.name like #{majorName}
+    </if>
+    order by id desc
+  </select>
+  <!--查询班级是否已经存在-->
+  <select id="selectOneExist" resultType="clazz" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from clazz
+    where fk_grade = #{fkGrade} and fk_major = #{fkMajor} and cno = #{cno}
+  </select>
+  <!--根据年级和专业ID查询班级列表-->
+  <select id="selectAllGradeIdAndMajorId" resultType="clazz" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from clazz
+    where del_flag = 0 and fk_grade = #{gradeId} and fk_major = #{majorId}
+    order by id desc
+  </select>
+</mapper>

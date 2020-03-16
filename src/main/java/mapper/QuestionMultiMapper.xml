@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.QuestionMultiMapper" >
+  <resultMap id="BaseResultMap" type="entity.QuestionMulti" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="optionA" property="optiona" jdbcType="VARCHAR" />
+    <result column="optionB" property="optionb" jdbcType="VARCHAR" />
+    <result column="optionC" property="optionc" jdbcType="VARCHAR" />
+    <result column="optionD" property="optiond" jdbcType="VARCHAR" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="DOUBLE" />
+    <result column="fk_teacher" property="fkTeacher" jdbcType="INTEGER" />
+    <result column="fk_qtype" property="fkQtype" jdbcType="INTEGER" />
+    <result column="del_flag" property="delFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, optionA, optionB, optionC, optionD, answer, score, fk_teacher, fk_qtype, 
+    del_flag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from question_multi
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from question_multi
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="entity.QuestionMulti" >
+    insert into question_multi (id, title, optionA, 
+      optionB, optionC, optionD, 
+      answer, score, fk_teacher, 
+      fk_qtype, del_flag)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{optiona,jdbcType=VARCHAR}, 
+      #{optionb,jdbcType=VARCHAR}, #{optionc,jdbcType=VARCHAR}, #{optiond,jdbcType=VARCHAR}, 
+      #{answer,jdbcType=VARCHAR}, #{score,jdbcType=DOUBLE}, #{fkTeacher,jdbcType=INTEGER}, 
+      #{fkQtype,jdbcType=INTEGER}, #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="entity.QuestionMulti" >
+    insert into question_multi
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="optiona != null" >
+        optionA,
+      </if>
+      <if test="optionb != null" >
+        optionB,
+      </if>
+      <if test="optionc != null" >
+        optionC,
+      </if>
+      <if test="optiond != null" >
+        optionD,
+      </if>
+      <if test="answer != null" >
+        answer,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="fkTeacher != null" >
+        fk_teacher,
+      </if>
+      <if test="fkQtype != null" >
+        fk_qtype,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="optiona != null" >
+        #{optiona,jdbcType=VARCHAR},
+      </if>
+      <if test="optionb != null" >
+        #{optionb,jdbcType=VARCHAR},
+      </if>
+      <if test="optionc != null" >
+        #{optionc,jdbcType=VARCHAR},
+      </if>
+      <if test="optiond != null" >
+        #{optiond,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=DOUBLE},
+      </if>
+      <if test="fkTeacher != null" >
+        #{fkTeacher,jdbcType=INTEGER},
+      </if>
+      <if test="fkQtype != null" >
+        #{fkQtype,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="entity.QuestionMulti" >
+    update question_multi
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="optiona != null" >
+        optionA = #{optiona,jdbcType=VARCHAR},
+      </if>
+      <if test="optionb != null" >
+        optionB = #{optionb,jdbcType=VARCHAR},
+      </if>
+      <if test="optionc != null" >
+        optionC = #{optionc,jdbcType=VARCHAR},
+      </if>
+      <if test="optiond != null" >
+        optionD = #{optiond,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=DOUBLE},
+      </if>
+      <if test="fkTeacher != null" >
+        fk_teacher = #{fkTeacher,jdbcType=INTEGER},
+      </if>
+      <if test="fkQtype != null" >
+        fk_qtype = #{fkQtype,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="entity.QuestionMulti" >
+    update question_multi
+    set title = #{title,jdbcType=VARCHAR},
+      optionA = #{optiona,jdbcType=VARCHAR},
+      optionB = #{optionb,jdbcType=VARCHAR},
+      optionC = #{optionc,jdbcType=VARCHAR},
+      optionD = #{optiond,jdbcType=VARCHAR},
+      answer = #{answer,jdbcType=VARCHAR},
+      score = #{score,jdbcType=DOUBLE},
+      fk_teacher = #{fkTeacher,jdbcType=INTEGER},
+      fk_qtype = #{fkQtype,jdbcType=INTEGER},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--根据题目查询多选题-->
+  <select id="selectByTitle" resultMap="BaseResultMap" parameterType="string" >
+    select
+    <include refid="Base_Column_List"/>
+    from question_multi
+    where title = #{title}
+  </select>
+  <!--根据条件查询所有的多选题-->
+  <select id="selectAllBySelective" resultType="map" parameterType="map" >
+    select
+    t1.id, t1.title, t1.score, t2.type qtype,t3.realname teacherName
+    from question_multi t1
+    left join question_type t2 on t1.fk_qtype = t2.id
+    left join teacher t3 on t1.fk_teacher = t3.id
+    where t1.del_flag = 0
+    <if test="title != null and title != '' ">
+      and t1.title like #{title}
+    </if>
+    <if test="qtype != null">
+      and t1.fk_qtype = #{qtype}
+    </if>
+    order by t1.id desc
+  </select>
+  <!--除了自身是否还有相同的题目-->
+  <select id="selectByTitleWithoutSelf" resultMap="BaseResultMap" parameterType="questionSingle" >
+    select
+    <include refid="Base_Column_List"/>
+    from question_multi
+    where title = #{title} and id &lt;&gt; #{id}
+  </select>
+  <!--根据ID查询多选题-->
+  <select id="selectAllByExamId" resultMap="BaseResultMap" parameterType="int" >
+    select
+    t1.id, t1.title, t1.optionA, t1.optionB, t1.optionC, t1.optionD, t1.answer, t1.score, t1.fk_teacher, t1.fk_qtype,
+    t1.del_flag
+    from question_multi t1
+     left join exam_questions t2 on t1.id = t2.fk_question and  t2.fk_qtype = 2 and t2.del_flag = 0
+    where t2.fk_exam = #{examId}
+  </select>
+  <!--根据ID获取所有的多选题-->
+  <select id="selectByIDs" resultType="questionMulti">
+    select
+    <include refid="Base_Column_List"/>
+    from question_multi
+    where id in
+    <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
+</mapper>

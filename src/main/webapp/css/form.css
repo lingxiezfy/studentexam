@@ -1,0 +1,24 @@
+.error{
+	color:red;
+}
+.control-label{
+width:25%
+}
+.form-group div{
+	width:75%
+}
+.form-group input[type='text']{
+	width:80%
+}
+.form-group input[type='number']{
+	width:80%
+}
+.form-group input[type='password']{
+	width:80%
+}
+.form-group select{
+	width:80%
+}
+.form-group textarea{
+	width:80%
+}

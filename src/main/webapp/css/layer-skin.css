@@ -1,0 +1,15 @@
+.my-skin .layui-layer-btn a{
+	color: #FFF;
+	background-color: #009688;
+	border-color: #009688;
+	font-weight:bold;
+	white-space: nowrap;
+	line-height:25px;
+	font-weight: 700;
+	text-align: center;
+}
+.my-skin .layui-layer-btn a:hover {
+	color: #FFF;
+ 	background-color: #007065;
+ 	border-color: #00635a;
+}
