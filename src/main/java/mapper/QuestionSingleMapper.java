@@ -29,4 +29,13 @@ public interface QuestionSingleMapper {
     List<QuestionSingle> selectAllByExamId(Integer examId);
     //根据ID查询所有单选信息
     List<QuestionSingle> selectByIDs(@Param("ids")ArrayList<Integer> ids);
+
+    /**
+     * 统计可用的题目数量
+     */
+    int countAvailableQuestion();
+    /**
+     * 随机选择 count 题可用的单选题
+     */
+    List<QuestionSingle> selectRandomAvailableCount(@Param("count") Integer count);
 }

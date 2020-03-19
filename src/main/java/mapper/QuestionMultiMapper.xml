@@ -210,4 +210,10 @@
       #{id}
     </foreach>
   </select>
+  <select id="countAvailableQuestion" resultType="java.lang.Integer">
+      select count(*) from question_multi where del_flag = 0
+  </select>
+  <select id="selectRandomAvailableCount" resultMap="BaseResultMap">
+    select * from question_multi where del_flag = 0 order by rand() limit #{count}
+  </select>
 </mapper>

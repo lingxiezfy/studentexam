@@ -1,6 +1,7 @@
 package mapper;
 
 import entity.QuestionMulti;
+import entity.QuestionSingle;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -29,4 +30,13 @@ public interface QuestionMultiMapper {
     List<QuestionMulti> selectAllByExamId(Integer examId);
     //根据ID所有的多选
     List<QuestionMulti> selectByIDs(@Param("ids") ArrayList<Integer> ids);
+
+    /**
+     * 统计可用的题目数量
+     */
+    int countAvailableQuestion();
+    /**
+     * 随机选择 count 题可用的单选题
+     */
+    List<QuestionMulti> selectRandomAvailableCount(@Param("count") Integer count);
 }
