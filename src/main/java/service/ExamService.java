@@ -1,5 +1,6 @@
 package service;
 
+import dto.GeneratePaperOption;
 import entity.Exam;
 import entity.ExamAnswer;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ExamService {
-    public String saveExam(Exam exam, HttpSession session);
+    public String saveExam(Exam exam, GeneratePaperOption generateOption, HttpSession session);
 
     public List<Exam> getExamAllBySelective(String title);
 

@@ -2,6 +2,7 @@ package web.teacher;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import dto.GeneratePaperOption;
 import entity.Exam;
 import entity.ExamClazz;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +79,8 @@ public class ExamPaperController {
      */
     @RequestMapping("/savePaper")
     @ResponseBody
-    public String savePaper(Exam exam, HttpSession session){
-        String result = examService.saveExam(exam,session);
+    public String savePaper(Exam exam, GeneratePaperOption generateOption, HttpSession session){
+        String result = examService.saveExam(exam,generateOption,session);
         return result;
     }
 

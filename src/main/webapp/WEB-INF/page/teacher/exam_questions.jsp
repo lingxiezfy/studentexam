@@ -85,7 +85,9 @@
                         data:{"id":id,"fkQuestion":fkQuestion,"fkQtype":fkQtype,"fkExam":fkExam},
     					success:function(data){
     						if(data=='ok'){
-    							layer.alert("删除成功！");
+                                layer.alert("删除成功！",function(){
+                                    window.location.reload();
+                                });
     						}else{
     							layer.alert("删除失败！");
     						}
@@ -99,7 +101,7 @@
 	    		type:2,//弹出iframe层
 	    		title:'选择试题',
 	    		area:['800px','500px'],
-	    		content:'${basePath}teacher/toQuestionList?eid='+eid,
+	    		content:'${basePath}teacher/toQuestionList?qtype=1&eid='+eid,
 	    		btn:'确定',
 	    		skin:'my-skin',
 	    		yes:function(index,layero){

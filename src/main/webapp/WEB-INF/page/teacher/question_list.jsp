@@ -21,7 +21,7 @@
         <div class="col-md-12">
           <div class="tile">
            <div class="tile-body">
-              <form class="row" action="${basePath }teacher/toQuestionList" method="post">
+              <form id="qtypeForm" class="row" action="${basePath }teacher/toQuestionList" method="post">
                 <input type="hidden" value="${eid }" name="eid">
                 <div class="form-group col-md-3">
                   <select class="form-control" id="qtype" name="qtype">
@@ -74,7 +74,13 @@
     <script type="text/javascript">
 	    $(function(){
           qtypeSelectWithDefault("qtype",'${qtype}');
-		})
+          $("#qtype").change(function () {
+            if($(this).val()){
+              $("#qtypeForm").submit();
+            }
+          });
+		});
+
     	
     	//添加试题
     	function add(){

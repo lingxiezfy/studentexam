@@ -151,7 +151,7 @@
 	    	layer.open({
 	    		type:2,//弹出iframe层
 	    		title:'添加试卷',
-	    		area:['550px','280px'],
+	    		area:['550px','350px'],
 	    		content:'${basePath}teacher/toAddPaper',
 	    		btn:'添加',
 	    		skin:'my-skin',

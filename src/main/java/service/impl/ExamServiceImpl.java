@@ -1,5 +1,6 @@
 package service.impl;
 
+import dto.GeneratePaperOption;
 import entity.*;
 import mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import service.ExamService;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class ExamServiceImpl implements ExamService {
@@ -37,7 +39,7 @@ public class ExamServiceImpl implements ExamService {
     *添加试卷
     * */
     @Override
-    public String saveExam(Exam exam, HttpSession session) {
+    public String saveExam(Exam exam, GeneratePaperOption generateOption, HttpSession session) {
         String result = "error";
         //判断试卷是否存在
         Exam hasExam = examMapper.selectByTitle(exam.getTitle());
@@ -49,8 +51,63 @@ public class ExamServiceImpl implements ExamService {
             Teacher teacher = (Teacher)session.getAttribute("user");
             exam.setFkTeacher(teacher.getId());
             exam.setFkStatus(UNINIT);
-            examMapper.insertSelective(exam);
-            result = "ok";
+            if(examMapper.insertSelective(exam) > 0){
+                if(Objects.nonNull(generateOption) && generateOption.isAutoGenerate()){
+                    //获取试卷题型的总分数
+                    AtomicReference<Double> singlePoints = new AtomicReference<>(0.0);
+                    AtomicReference<Double> multiPoints = new AtomicReference<>(0.0);
+                    AtomicReference<Double> judgePoints = new AtomicReference<>(0.0);
+                    Double totalPoints = 0.0;
+                    if (generateOption.getSingleCount() > 0) {
+                        List<QuestionSingle> list = singleMapper.selectRandomAvailableCount(generateOption.getSingleCount());
+                        list.forEach(question->{
+                            ExamQuestions examQuestion = new ExamQuestions();
+                            examQuestion.setFkExam(exam.getId());
+                            examQuestion.setFkQuestion(question.getId());
+                            examQuestion.setFkQtype(1);
+                            if (questionsMapper.insertSelective(examQuestion) > 0) {
+                                singlePoints.updateAndGet(v -> v + (question.getScore() == null ? 0 : question.getScore()));
+                            }
+                        });
+                    }
+                    if (generateOption.getMultiCount() > 0) {
+                        List<QuestionMulti> list = multiMapper.selectRandomAvailableCount(generateOption.getSingleCount());
+                        list.forEach(question->{
+                            ExamQuestions examQuestion = new ExamQuestions();
+                            examQuestion.setFkExam(exam.getId());
+                            examQuestion.setFkQuestion(question.getId());
+                            examQuestion.setFkQtype(2);
+                            if (questionsMapper.insertSelective(examQuestion) > 0) {
+                                multiPoints.updateAndGet(v -> v + (question.getScore() == null ? 0 : question.getScore()));
+                            }
+                        });
+                    }
+                    if (generateOption.getJudgeCount() > 0) {
+                        List<QuestionJudge> list = judgeMapper.selectRandomAvailableCount(generateOption.getSingleCount());
+                        list.forEach(question->{
+                            ExamQuestions examQuestion = new ExamQuestions();
+                            examQuestion.setFkExam(exam.getId());
+                            examQuestion.setFkQuestion(question.getId());
+                            examQuestion.setFkQtype(3);
+                            if (questionsMapper.insertSelective(examQuestion) > 0) {
+                                judgePoints.updateAndGet(v -> v + (question.getScore() == null ? 0 : question.getScore()));
+                            }
+                        });
+                    }
+                    totalPoints = singlePoints.get() + multiPoints.get() + judgePoints.get();
+                    if(totalPoints.compareTo(0.0) > 0){
+                        Exam updateExam = new Exam();
+                        updateExam.setId(exam.getId());
+                        updateExam.setSinglePoints(singlePoints.get());;
+                        updateExam.setMultiPoints(multiPoints.get());
+                        updateExam.setJudgePoints(judgePoints.get());
+                        updateExam.setTotalPoints(totalPoints);
+                        updateExam.setFkStatus(2);
+                        examMapper.updateByPrimaryKeySelective(updateExam);
+                    }
+                }
+                result = "ok";
+            }
         }
         return result;
     }

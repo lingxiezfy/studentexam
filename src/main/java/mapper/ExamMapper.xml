@@ -38,7 +38,7 @@
       #{singlePoints,jdbcType=DOUBLE}, #{multiPoints,jdbcType=DOUBLE}, #{judgePoints,jdbcType=DOUBLE}, 
       #{totalPoints,jdbcType=DOUBLE}, #{delFlag,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="entity.Exam" >
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="entity.Exam" >
     insert into exam
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
