@@ -8,6 +8,7 @@
 
     <link rel="BOOKMARK" href="${basePath }images/icon.png">
     <link rel="stylesheet" type="text/css" href="${basePath }css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${basePath }layui/css/layui.css" media="all">
     <link rel="stylesheet" type="text/css" href="${basePath }css/head.css">
     <link rel="stylesheet" type="text/css" href="${basePath }css/list_main.css">
     <link rel="stylesheet" type="text/css" href="${basePath }css/bootstrap-admin-theme.css">
@@ -76,6 +77,21 @@
 					</div>
 				</div>
 			</div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default bootstrap-admin-no-table-panel">
+                        <div class="panel-heading">
+                            <div class="text-muted bootstrap-admin-box-title">提交作业文件：</div>
+                        </div>
+                        <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+                            <button type="button" class="layui-btn" id="test1">
+                                <i class="layui-icon">&#xe67c;</i>上传图片
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
 
@@ -84,11 +100,28 @@
     </div>
 </div>
 
-<script type="text/javascript" src="${basePath }js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${basePath }js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="${basePath }layui/layui.js"></script>
 <script type="text/javascript" src="${basePath }js/base.js"></script>
 <script type="text/javascript" src="${basePath }js/tips.js"></script>
 <script type="text/javascript" src="${basePath }js/work_take.js"></script>
+<script type="text/javascript">
+    layui.use('upload', function(){
+        var upload = layui.upload;
 
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/upload/' //上传接口
+            ,done: function(res){
+                //上传完毕回调
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

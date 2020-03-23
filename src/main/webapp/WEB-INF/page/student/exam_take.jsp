@@ -290,7 +290,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="${basePath }js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${basePath }js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="${basePath }js/base.js"></script>
 <script type="text/javascript" src="${basePath }js/tips.js"></script>
 <script type="text/javascript" src="${basePath }js/exam_take.js"></script>
