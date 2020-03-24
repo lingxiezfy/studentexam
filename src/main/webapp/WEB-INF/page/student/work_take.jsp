@@ -82,12 +82,28 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default bootstrap-admin-no-table-panel">
                         <div class="panel-heading">
-                            <div class="text-muted bootstrap-admin-box-title">提交作业文件：</div>
+                            <div class="text-muted bootstrap-admin-box-title">
+                                提交作业文件：&nbsp;
+                                <c:if test="${submit != null}">
+                                    <a href="${basePath}upload${submit.fileUrl}">点击查看</a>
+                                </c:if>
+                            </div>
+
                         </div>
                         <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
-                            <button type="button" class="layui-btn" id="test1">
-                                <i class="layui-icon">&#xe67c;</i>上传图片
+
+                            <button type="button" class="layui-btn" id="workUpload">
+                                <i class="layui-icon">&#xe67c;</i>
+                                <c:choose>
+                                    <c:when test="${submit == null}">
+                                        选择文件
+                                    </c:when>
+                                    <c:otherwise>
+                                        重新提交
+                                    </c:otherwise>
+                                </c:choose>
                             </button>
+
                         </div>
                     </div>
                 </div>
@@ -111,12 +127,17 @@
 
         //执行实例
         var uploadInst = upload.render({
-            elem: '#test1' //绑定元素
-            ,url: '/upload/' //上传接口
+            elem: '#workUpload' //绑定元素
+            ,url: '${basePath }student/workUpload?workId=${work.id}' //上传接口
+            ,accept:"file"
             ,done: function(res){
                 //上传完毕回调
+                layer.alert("上传成功",function(){
+                    window.location.reload();
+                });
             }
             ,error: function(){
+                layer.error("上传失败,请重试！");
                 //请求异常回调
             }
         });

@@ -190,7 +190,7 @@ public class WorkPaperController {
     @ResponseBody
     public String workStop(@PathVariable("eid") Integer eid){
         Date endTime = new Date();
-        String result = workService.updateStatus(eid,endTime,2);
+        String result = workService.updateStatus(eid,endTime,4);
         return result;
     }
 

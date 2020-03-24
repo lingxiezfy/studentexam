@@ -43,12 +43,19 @@
                   <td>${work.status}</td>
                   <td>${work.endTime }</td>
                   <td>
-                    未提交
+                    <c:choose>
+                      <c:when test="${work.submitFile == null}">
+                        未提交
+                      </c:when>
+                      <c:otherwise>
+                        已提交(可修改)
+                      </c:otherwise>
+                    </c:choose>
+
                   </td>
                   <td>
-                    <button class="btn btn-primary" type="button" style="height:30px;line-height:10px;" onclick="submit('${work.id}')">提交文件</button>
+                    <a href="javascript:working('${work.id }')" >查看练习</a>
                   </td>
-
                 </tr>
               	</c:forEach>
               	<c:if test="${empty works }">
@@ -72,24 +79,6 @@
     		var tempwindow=window.open('_blank');
     		tempwindow.location='${basePath}student/working/'+eid;
     	}
-
-        function submit(eid){
-          layer.open({
-            type:2,//弹出iframe层
-            title:'提交文件',
-            area:['900px','500px'],
-            content:'${basePath}student/toUploadFile/'+eid,
-            btn:'确认上传',
-            skin:'my-skin',
-            yes:function(index,layero){
-              //调用弹出层页面js
-              var iframeWin = window[layero.find('iframe')[0]['name']];
-              iframeWin.toSubmit();
-            }
-
-          })
-        }
-
     </script>
   </body>
 </html>

@@ -103,8 +103,11 @@
 <!--        <table tableName="role_menu" enableCountByExample="false" enableUpdateByExample="false" -->
 <!--        	enableSelectByExample="false" enableDeleteByExample="false" -->
 <!--        	selectByExampleQueryId="false"></table>-->
-        <table tableName="work_status" enableCountByExample="false" enableUpdateByExample="false"
-                	enableSelectByExample="false" enableDeleteByExample="false"
-                	selectByExampleQueryId="false"></table>
+<!--        <table tableName="work_status" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--                	enableSelectByExample="false" enableDeleteByExample="false"-->
+<!--                	selectByExampleQueryId="false"></table>-->
+        <table tableName="work_submit" enableCountByExample="false" enableUpdateByExample="false"
+               enableSelectByExample="false" enableDeleteByExample="false"
+               selectByExampleQueryId="false"></table>
     </context>
 </generatorConfiguration>

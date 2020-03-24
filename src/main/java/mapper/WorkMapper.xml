@@ -152,13 +152,13 @@
   <!--根据学生ID查询当前需要参加的课堂练习-->
   <select id="selectByStudent" resultType="map" parameterType="int" >
     select
-    t1.id, t1.title, t1.time_limit timeLimit, DATE_FORMAT(t1.end_time,'%Y-%m-%d') endTime ,t5.status
+      t1.id, t1.title, t1.time_limit as timeLimit, t1.end_time as endTime ,t5.status,t6.file_url as submitFile
     from work t1
-    left join work_clazz t2 on t1.id = t2.fk_work
-    left join clazz t3 on t2.fk_clazz = t3.id
-    left join student t4 on t4.fk_clazz = t3.id
-    left join work_status t5 on t1.fk_status = t5.id
-    left join work_submit t6 on t1.id = t6.fk_work and t6.fk_student = #{studentId}
-    where t4.id = #{studentId} and t1.del_flag =0 and t1.fk_status = 3 and DATE_FORMAT(t1.end_time,'%Y-%m-%d') >= DATE_FORMAT(now(),'%Y-%m-%d') and t6.fk_student is null
+           left join work_clazz t2 on t1.id = t2.fk_work
+           left join clazz t3 on t2.fk_clazz = t3.id
+           left join student t4 on t4.fk_clazz = t3.id
+           left join work_status t5 on t1.fk_status = t5.id
+           left join work_submit t6 on t1.id = t6.fk_work and t6.fk_student= t4.id
+    where t4.id = #{studentId} and t1.del_flag = 0 and t1.fk_status = 3 and t1.end_time >= now()
   </select>
 </mapper>

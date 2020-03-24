@@ -124,7 +124,7 @@ public class UploadFileUtils {
             // 随机生成文件名
             fileName = UUID.randomUUID().toString().replace("-","")+ suffix;
         }else {
-            fileName = fileName.trim();
+            fileName = fileName.trim()+suffix;
         }
         try {
             // 构建临时的文件（服务器临时目录）
