@@ -96,4 +96,11 @@
     from work_clazz
     where fk_work = #{fkWork} and fk_clazz = #{fkClazz}
   </select>
+
+  <!--根据作业ID和班级ID查询关联记录-->
+  <select id="selectClassListByWorkId" resultMap="mapper.ClazzMapper.BaseResultMap" parameterType="java.lang.Integer" >
+    select c.*
+    from work_clazz wc left join clazz c on wc.fk_clazz = c.id
+    where wc.fk_work = #{workId}
+  </select>
 </mapper>

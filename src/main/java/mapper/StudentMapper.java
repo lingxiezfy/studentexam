@@ -14,6 +14,7 @@ public interface StudentMapper {
     int insertSelective(Student record);
 
     Student selectByPrimaryKey(Integer id);
+    List<Student> selectByClazzId(Integer clazzId);
 
     int updateByPrimaryKeySelective(Student record);
 

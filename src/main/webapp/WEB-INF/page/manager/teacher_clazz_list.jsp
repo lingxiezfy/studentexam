@@ -83,8 +83,8 @@
     <script type="text/javascript">
     	$(function(){
     		//年级和专业下拉框初始化
-    		gradeSelect("fkGrade");
-        	majorSelect("fkMajor");
+    		gradeSelect("fkGrade",'${basePath}');
+        	majorSelect("fkMajor",'${basePath}');
     	})
     	
     	function del(tid){

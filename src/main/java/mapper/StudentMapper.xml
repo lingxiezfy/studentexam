@@ -155,4 +155,10 @@
     from student
     where username = #{username} and id &lt;&gt; #{id}
   </select>
+  <select id="selectByClazzId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    from student
+    where fk_clazz = #{clazzId}
+  </select>
 </mapper>

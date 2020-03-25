@@ -107,18 +107,4 @@ public class StudentWorkController {
         return false;
     }
 
-
-
-    /**
-     * 跳转到文件上传页面
-     * @param eid
-     * @param model
-     * @return String
-     */
-    @RequestMapping("/toUploadFile/{eid}")
-    public String toUploadFile(@PathVariable("eid") Integer eid,Model model){
-//        List<Map> list = clazzService.getExamClazzAllByExamId(eid);
-//        model.addAttribute("list",list);
-        return "student/work_submit";
-    }
 }

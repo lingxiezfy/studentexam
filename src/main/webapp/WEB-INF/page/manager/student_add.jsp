@@ -70,8 +70,8 @@
     
     $(function() {
     	//初始化下拉框
-    	gradeSelect("fkGrade");
-    	majorSelect("fkMajor");
+    	gradeSelect("fkGrade",'${basePath}');
+    	majorSelect("fkMajor",'${basePath}');
     	
     	//表单验证
         $("#myform").validate({

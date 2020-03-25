@@ -1,5 +1,6 @@
 package mapper;
 
+import entity.Clazz;
 import entity.WorkClazz;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface WorkClazzMapper {
     List<Map> selectByFkWork(Integer fkWork);
     //根据作业ID和班级ID查询关联记录
     WorkClazz selectByFkWorkAndFkClazz(WorkClazz workClazz);
+
+    List<Clazz> selectClassListByWorkId(Integer workId);
 }

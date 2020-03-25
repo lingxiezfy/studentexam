@@ -40,7 +40,7 @@
                 </div>
               </form>
             </div>
-            <table class="table table-bordered">
+            <table class="table table-bordered" style="font-size: 15px">
               <thead>
                 <tr align="center">
                   <th>序号</th>
@@ -82,6 +82,9 @@
 	                  		<c:when test="${work.fkStatus eq 3}">
 	                  			正在运行
 	                  		</c:when>
+                            <c:when test="${work.fkStatus eq 4}">
+                                已结束
+                            </c:when>
 	                  	</c:choose>
 	                  </td>
 	                  <td>
@@ -95,6 +98,9 @@
 	                  		<c:when test="${work.fkStatus eq 3}">
 	                  			<button class="btn btn-danger" type="button" style="height:30px;line-height:10px;" onclick="toWorkStop('${work.id}')">立即停止</button>
 	                  		</c:when>
+                            <c:when test="${work.fkStatus eq 4}">
+                                <button class="btn btn-warning" type="button" style="height:30px;line-height:10px;" onclick="toReview('${work.id}')">作业批改</button>
+                            </c:when>
 	                  	</c:choose>
 	                  </td>
 	                  <td>
@@ -232,6 +238,11 @@
                         }
                     })
                 },function(){})//取消
+        }
+
+        function toReview(workId) {
+            var tempwindow=window.open('_blank');
+            tempwindow.location='/teacher/toReview/'+workId;
         }
     </script>
   </body>

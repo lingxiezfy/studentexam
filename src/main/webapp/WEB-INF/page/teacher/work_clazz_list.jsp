@@ -38,7 +38,12 @@
                   </select>
                 </div>
                 <div class="form-group col-md-3 align-self-end">
-                  <button class="btn btn-primary" type="button" onclick="clazzAdd()"><i class="fa fa-fw fa-lg fa-plus-circle"></i>添加</button>
+                  <button class="btn btn-primary" type="button"
+                          <c:choose>
+                              <c:when test="${work.fkStatus == 3 || work.fkStatus == 4}"> disabled </c:when>
+                              <c:otherwise>onclick="clazzAdd()"</c:otherwise>
+                          </c:choose>
+                  ><i class="fa fa-fw fa-lg fa-plus-circle"></i>添加</button>
                 </div>
               </form>
             </div>
@@ -61,7 +66,12 @@
                       <td>${tc.majorName }</td>
                       <td>${tc.cno }</td>
                       <td>
-                        <button class="btn btn-info" type="button" style="height:30px;line-height:10px;" onclick="del('${tc.id}')">删除</button>
+                        <button class="btn btn-info" type="button" style="height:30px;line-height:10px;"
+                                <c:choose>
+                                    <c:when test="${work.fkStatus == 3 || work.fkStatus == 4}"> disabled </c:when>
+                                    <c:otherwise>onclick="del('${tc.id}')"</c:otherwise>
+                                </c:choose>
+                        >删除</button>
                       </td>
                     </tr>
                   </c:if>
@@ -86,8 +96,8 @@
     <script type="text/javascript">
     	$(function(){
     		//年级和专业下拉框初始化
-    		gradeSelect("fkGrade");
-        	majorSelect("fkMajor");
+    		gradeSelect("fkGrade",'${basePath}');
+        	majorSelect("fkMajor",'${basePath}');
     	})
 
     	function del(eid){
@@ -145,7 +155,7 @@
 	    		$("#"+selectId).html("<option value = ''>--请选择班级--</option>");
 	    		$.ajax({
 	    			type:'post',
-	    			url:basePath+'common/getClazzAll',
+	    			url:'${basePath}common/getClazzAll',
 	    			data:{"gradeId":gradeId,"majorId":majorId},
 	    			dataType:'json',
 	    			success:function(data){
