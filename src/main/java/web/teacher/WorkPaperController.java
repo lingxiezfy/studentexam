@@ -205,7 +205,6 @@ public class WorkPaperController {
      */
     @RequestMapping("/toReview/{workId}")
     public String toReview(@PathVariable("workId") Integer workId,HttpSession session,Model model){
-        //获取当前登录用户
         Work work = workService.getWorkId(workId);
         model.addAttribute("work",work);
         return "teacher/work_review";
@@ -284,9 +283,34 @@ public class WorkPaperController {
         return true;
     }
 
-    @RequestMapping("/statistics/{workId}")
-    public String statistics(@PathVariable("workId") Integer workId){
+    /**
+     * 进入统计页面
+     */
+    @RequestMapping("/toStatistics/{workId}")
+    public String toStatistics(@PathVariable("workId") Integer workId,Model model){
+        List<Clazz> clazzList = workClazzMapper.selectClassListByWorkId(workId);
+        model.addAttribute("clazzList",clazzList);
+        Work work = workService.getWorkId(workId);
+        model.addAttribute("work",work);
         return "teacher/work_statistics";
+    }
+
+    /**
+     * 统计学生提交
+     */
+    @RequestMapping("/statistics")
+    @ResponseBody
+    public Map<String,Object> statistics(Integer workId, Integer classId){
+        Map<String,Object> response = new HashMap<>();
+        List<Map> list = workSubmitMapper.statisticsSubmit(workId,classId);
+        response.put("data",list);
+        response.put("code",0);
+        response.put("count",list.size());
+        long waitSubmit = list.stream().filter(o->o.get("submitId").equals(0) || o.get("submitFile") == null).count();
+        response.put("waitSubmit",waitSubmit);
+        response.put("hasSubmit",list.size()-waitSubmit);
+        response.put("message","请求成功");
+        return response;
     }
 
 }

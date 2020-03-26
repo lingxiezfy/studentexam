@@ -19,7 +19,10 @@
     <div class="layui-row">
         <div class="layui-col-md2">
             <div class="layui-card">
-                <div class="layui-card-header"><strong>班级</strong></div>
+                <div class="layui-card-header">
+                    <strong>班级</strong>
+
+                </div>
                 <div class="layui-card-body">
                     <div id="classTreeDiv" style="height: 350px;overflow: auto;" >
                         <ul id="classTree" class="dtree" data-id="0"></ul>
@@ -36,6 +39,9 @@
                         ${work.content}
                     </div>
                 </div>
+            </div>
+            <div class="layui-row">
+                &nbsp;
             </div>
             <div class="layui-row">
                 <iframe name="view-iframe" id="view-iframe"></iframe>
@@ -155,5 +161,15 @@
             }
         });
     });
+
+    function toStatistics(workId){
+        layer.open({
+            type: 2,
+            title:"统计",
+            area: ['700px', '450px'],
+            maxmin: true,
+            content: '${basePath}teacher/toStatistics/'+workId
+        });
+    }
 </script>
 </html>
