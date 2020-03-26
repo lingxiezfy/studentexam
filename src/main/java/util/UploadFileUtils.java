@@ -147,10 +147,8 @@ public class UploadFileUtils {
      * @param dir : String
      * @return dir : File
      */
-    private static File makeFileDir(String dir){
+    public static File makeFileDir(String dir){
         // 构建上传文件的存放 "文件夹" 路径
-        String fileDirPath = "";
-
         File fileDir = new File(dir);
         if(!fileDir.exists()){
             // 递归生成文件夹
