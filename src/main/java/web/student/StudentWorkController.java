@@ -43,7 +43,7 @@ public class StudentWorkController {
      * @param model
      * @return String
      */
-    @RequestMapping("/workSubmit")
+    @RequestMapping("/workList")
     public String workList(HttpSession session, Model model){
         Student student = (Student)session.getAttribute("user");
         List<Map> works = workService.getWorksByStudent(student.getId());
