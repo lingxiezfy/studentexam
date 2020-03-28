@@ -1,88 +1,99 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="mapper.TeacherClazzMapper" >
-  <resultMap id="BaseResultMap" type="entity.TeacherClazz" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="fk_teacher" property="fkTeacher" jdbcType="INTEGER" />
-    <result column="fk_clazz" property="fkClazz" jdbcType="INTEGER" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, fk_teacher, fk_clazz
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from teacher_clazz
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from teacher_clazz
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="entity.TeacherClazz" >
-    insert into teacher_clazz (id, fk_teacher, fk_clazz
-      )
-    values (#{id,jdbcType=INTEGER}, #{fkTeacher,jdbcType=INTEGER}, #{fkClazz,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="entity.TeacherClazz" >
-    insert into teacher_clazz
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="fkTeacher != null" >
-        fk_teacher,
-      </if>
-      <if test="fkClazz != null" >
-        fk_clazz,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="fkTeacher != null" >
-        #{fkTeacher,jdbcType=INTEGER},
-      </if>
-      <if test="fkClazz != null" >
-        #{fkClazz,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="entity.TeacherClazz" >
-    update teacher_clazz
-    <set >
-      <if test="fkTeacher != null" >
-        fk_teacher = #{fkTeacher,jdbcType=INTEGER},
-      </if>
-      <if test="fkClazz != null" >
-        fk_clazz = #{fkClazz,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="entity.TeacherClazz" >
-    update teacher_clazz
-    set fk_teacher = #{fkTeacher,jdbcType=INTEGER},
-      fk_clazz = #{fkClazz,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <!--根据教师ID和班级ID查询记录-->
-  <select id="selectByFKTeacherAndFKClazz" resultMap="BaseResultMap" parameterType="teacherClazz" >
-    select
-    <include refid="Base_Column_List" />
-    from teacher_clazz
-    where fk_teacher = #{fkTeacher} and fk_clazz = #{fkClazz}
-  </select>
-  <!--根据教师ID查询所关联的班级信息-->
-  <select id="selectByFKTeacher" resultType="map" parameterType="int" >
-    select
-    t1.id, t1.fk_teacher, t1.fk_clazz, t2.cno, t3.name gradeName,t4.name majorName
-    from teacher_clazz t1
-    left join clazz t2 on t1.fk_clazz = t2.id
-    left join grade t3 on t2.fk_grade = t3.id
-    left join major t4 on t2.fk_major = t4.id
-    where t1.fk_teacher = #{fkTeacher}
-  </select>
+<mapper namespace="mapper.TeacherClazzMapper">
+    <resultMap id="BaseResultMap" type="entity.TeacherClazz">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="fk_teacher" property="fkTeacher" jdbcType="INTEGER"/>
+        <result column="fk_clazz" property="fkClazz" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, fk_teacher, fk_clazz
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher_clazz
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from teacher_clazz
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="entity.TeacherClazz">
+        insert into teacher_clazz (id, fk_teacher, fk_clazz)
+        values (#{id,jdbcType=INTEGER}, #{fkTeacher,jdbcType=INTEGER}, #{fkClazz,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="entity.TeacherClazz">
+        insert into teacher_clazz
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="fkTeacher != null">
+                fk_teacher,
+            </if>
+            <if test="fkClazz != null">
+                fk_clazz,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="fkTeacher != null">
+                #{fkTeacher,jdbcType=INTEGER},
+            </if>
+            <if test="fkClazz != null">
+                #{fkClazz,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="entity.TeacherClazz">
+        update teacher_clazz
+        <set>
+            <if test="fkTeacher != null">
+                fk_teacher = #{fkTeacher,jdbcType=INTEGER},
+            </if>
+            <if test="fkClazz != null">
+                fk_clazz = #{fkClazz,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="entity.TeacherClazz">
+        update teacher_clazz
+        set fk_teacher = #{fkTeacher,jdbcType=INTEGER},
+            fk_clazz   = #{fkClazz,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <!--根据教师ID和班级ID查询记录-->
+    <select id="selectByFKTeacherAndFKClazz" resultMap="BaseResultMap" parameterType="teacherClazz">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher_clazz
+        where fk_teacher = #{fkTeacher} and fk_clazz = #{fkClazz}
+    </select>
+    <!--根据教师ID查询所关联的班级信息-->
+    <select id="selectByFKTeacher" resultType="map" parameterType="int">
+        select t1.id,
+               t1.fk_teacher,
+               t1.fk_clazz,
+               t2.cno,
+               t3.name gradeName,
+               t4.name majorName
+        from teacher_clazz t1
+                 left join clazz t2 on t1.fk_clazz = t2.id
+                 left join grade t3 on t2.fk_grade = t3.id
+                 left join major t4 on t2.fk_major = t4.id
+        where t1.fk_teacher = #{fkTeacher}
+    </select>
+    <select id="selectTeacherByClazzId" resultMap="mapper.TeacherMapper.BaseResultMap"
+            parameterType="java.lang.Integer">
+      select
+        t.id,t.realname,t.username,t.del_flag
+      from teacher_clazz  tc
+          left join teacher t on tc.fk_teacher = t.id
+      where t.del_flag = 0 and tc.fk_clazz = #{clazzId} ;
+    </select>
 </mapper>

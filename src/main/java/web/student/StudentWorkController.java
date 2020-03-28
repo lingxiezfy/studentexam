@@ -82,9 +82,9 @@ public class StudentWorkController {
         String realPath = "H:/ideaProjects/studentexam1.0/src/main/webapp/upload";
         String workPath = String.format("/work/student_%s",student.getId());
         String fileNameTemp = String.format("student_%s_work_%s",student.getId(),work.getId());
-        String fileName = UploadFileUtils.upload(file,tempPath+workPath,realPath+workPath,fileNameTemp);
-        if (fileName != null) {
-            String filePath = workPath+"/"+fileName;
+        UploadFileUtils.UploadResult uploadResult = UploadFileUtils.upload(file,tempPath+workPath,realPath+workPath,fileNameTemp,false);
+        if (uploadResult.isSuccess()) {
+            String filePath = workPath+"/"+uploadResult.getFileRealName();
             WorkSubmit submit = submitMapper.selectByWorkIdAndStudentId(work.getId(),student.getId());
             if(submit == null){
                 submit = new WorkSubmit();

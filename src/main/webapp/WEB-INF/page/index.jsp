@@ -17,7 +17,8 @@
       <ul class="app-nav">
         <!-- User Menu-->
         <li class="dropdown">
-          <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg">${sessionScope.user.username}</i>
+          <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">
+            <i class="fa fa-user fa-lg">${sessionScope.user.username}</i>
         	<c:if test="${sessionScope.user.modified eq 0 }">
         		&nbsp;&nbsp;<span style="color:red">当前是初始密码，请尽快修改密码</span>
         	</c:if>
@@ -50,7 +51,8 @@
     </c:if>
     <script type="text/javascript" src="${basePath }js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${basePath }js/popper.min.js"></script>
-    <script type="text/javascript" src="${basePath }js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${basePath }js/bootstrap-4.4.1.min.js"></script>
+<%--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>--%>
     <script type="text/javascript" src="${basePath }js/main.js"></script>
     <script type="text/javascript" src="${basePath }tools/layer/layer.js"></script>
     <script type="text/javascript">

@@ -73,7 +73,7 @@
     <script type="text/javascript" src="${basePath }js/select2.js"></script>
     <script type="text/javascript">
 	    $(function(){
-          qtypeSelectWithDefault("qtype",'${qtype}');
+          qtypeSelectWithDefault("qtype",'${qtype}','${basePath}');
           $("#qtype").change(function () {
             if($(this).val()){
               $("#qtypeForm").submit();

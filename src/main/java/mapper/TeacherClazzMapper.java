@@ -1,5 +1,6 @@
 package mapper;
 
+import entity.Teacher;
 import entity.TeacherClazz;
 
 import java.util.List;
@@ -21,4 +22,11 @@ public interface TeacherClazzMapper {
     TeacherClazz selectByFKTeacherAndFKClazz(TeacherClazz teacherClazz);
 
     List<Map> selectByFKTeacher(Integer teacherId);
+
+    /**
+     * 获取班级的教师团队
+     * @param clazzId 班级Id
+     * @return 任教的教师团队
+     */
+    List<Teacher> selectTeacherByClazzId(Integer clazzId);
 }

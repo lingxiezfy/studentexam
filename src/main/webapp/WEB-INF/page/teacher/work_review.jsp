@@ -21,7 +21,8 @@
             <div class="layui-card">
                 <div class="layui-card-header">
                     <strong>班级</strong>
-
+                    &nbsp;
+                    <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" onclick="toStatistics(${work.id})">去统计</button>
                 </div>
                 <div class="layui-card-body">
                     <div id="classTreeDiv" style="height: 350px;overflow: auto;" >

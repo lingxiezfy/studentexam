@@ -36,21 +36,21 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         if(user != null){
             //登录:学生
-            if(uri.contains("/student")){
+            if(uri.startsWith("/student")){
                 if(roleId != 1){
                     httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/toLogin");
                     return false;
                 }
             }
             //登录:教师
-            if(uri.contains("/teacher")){
+            if(uri.startsWith("/teacher")){
                 if(roleId != 2){
                     httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/toLogin");
                     return false;
                 }
             }
             //登录:管理员
-            if(uri.contains("/manager")){
+            if(uri.startsWith("/manager")){
                 if(roleId != 3){
                     httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/toLogin");
                     return false;

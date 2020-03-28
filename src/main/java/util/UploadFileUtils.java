@@ -9,6 +9,7 @@ import sun.misc.BASE64Decoder;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -71,41 +72,55 @@ public class UploadFileUtils {
 
     /**
      * 上传文件（多个）
-     * @param files List<MultipartFile>
-     * @param tempDir 临时路径：String
-     * @param realDir 真实路径：String
-     * @return 上传成功的文件名列表
+     * @see  UploadFileUtils#upload(MultipartFile, File, File, String, boolean, boolean)
      */
-    public static List<String> upload(List<MultipartFile> files, String tempDir, String realDir){
-        List<String> names = new ArrayList<>();
+    public static List<UploadResult> upload(List<MultipartFile> files, String tempDir, String realDir){
+        List<UploadResult> results = new ArrayList<>();
         // 临时存储路径
         File tempFilePath = makeFileDir(tempDir);
         // 服务存储路径
         File realPath = makeFileDir(realDir);
         files.stream().filter(Objects::nonNull).forEach(multipartFile->{
-            String name;
-            if((name = UploadFileUtils.upload(multipartFile,tempFilePath,realPath,null)) != null){
-                names.add(name);
-            };
+            results.add(UploadFileUtils.upload(multipartFile,tempFilePath,realPath,UUID.randomUUID().toString().replace("-",""),false,true));
         });
-        return names;
+        return results;
     }
 
 
     /**
      * 上传文件
-     * @param multipartFile MultipartFile
-     * @param tempDir 临时路径：String
-     * @param realDir 真实路径：String
-     * @param fileName 文件名（null则随机生成命名）
-     * @return 上传成功的文件名
+     * @see  UploadFileUtils#upload(MultipartFile, File, File, String, boolean, boolean)
      */
-    public static String upload(MultipartFile multipartFile, String tempDir, String realDir,String fileName){
+    public static UploadResult upload(MultipartFile multipartFile, String tempDir, String realDir,String fileName){
         // 临时存储路径
         File tempPath = makeFileDir(tempDir);
         // 服务存储路径
         File realPath = makeFileDir(realDir);
-        return upload(multipartFile,tempPath,realPath,fileName);
+        return upload(multipartFile,tempPath,realPath,fileName,true,false);
+    }
+
+    /**
+     * 上传文件
+     * @see  UploadFileUtils#upload(MultipartFile, File, File, String, boolean, boolean)
+     */
+    public static UploadResult upload(MultipartFile multipartFile, String tempDir, String realDir,String fileName,boolean withSuffix){
+        // 临时存储路径
+        File tempPath = makeFileDir(tempDir);
+        // 服务存储路径
+        File realPath = makeFileDir(realDir);
+        return upload(multipartFile,tempPath,realPath,fileName,withSuffix,false);
+    }
+
+    /**
+     * 上传文件
+     * @see  UploadFileUtils#upload(MultipartFile, File, File, String, boolean, boolean)
+     */
+    public static UploadResult upload(MultipartFile multipartFile, String tempDir, String realDir,String fileName,boolean withSuffix,boolean repeatAble){
+        // 临时存储路径
+        File tempPath = makeFileDir(tempDir);
+        // 服务存储路径
+        File realPath = makeFileDir(realDir);
+        return upload(multipartFile,tempPath,realPath,fileName,withSuffix,repeatAble);
     }
 
     /**
@@ -113,33 +128,155 @@ public class UploadFileUtils {
      * @param multipartFile MultipartFile
      * @param tempPath 临时路径：File
      * @param realPath 真实路径：File
-     * @param fileName 文件名（null则随机生成命名）
-     * @return 上传成功的文件名
+     * @param customizeName 自定义文件名
+     *                 null则使用源文件名
+     * @param withSuffix 给定的文件名是否含有后缀
+     *                   fileName 不为空的时候有效
+     *                   当给定的文件名没有后缀时，即使 withSuffix 参数值为true也不会生效
+     *                   （除非源文件也没有后缀，才有可能成功上传一个不带后缀的文件）
+     * @param repeatAble 是否允许重复
+     *                   允许重复时，将在文件名末尾添加 (1)
+     *                   不允许时，跳过文件拒绝添加文件
+     * @return 上传结果
      */
-    private static String upload(MultipartFile multipartFile, File tempPath, File realPath,String fileName){
-        // 获取文件后缀(含.号)
-        String suffix = multipartFile.getOriginalFilename() == null ? ""
-                : multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
-        if(StringUtils.isEmpty(fileName)){
-            // 随机生成文件名
-            fileName = UUID.randomUUID().toString().replace("-","")+ suffix;
-        }else {
-            fileName = fileName.trim()+suffix;
+    private static UploadResult upload(MultipartFile multipartFile
+            , File tempPath
+            , File realPath
+            ,String customizeName
+            ,boolean withSuffix
+            ,boolean repeatAble){
+        String originName = multipartFile.getOriginalFilename() == null
+                ? UUID.randomUUID().toString().replace("-","")
+                : multipartFile.getOriginalFilename().trim();
+        int dotIndex =  originName.lastIndexOf(".");
+        // 获取源文件后缀(不包含.号)
+        String suffix = dotIndex > -1 ? originName.substring(dotIndex+1) : "";
+        // 获取源文件名(不包含.号和后缀)
+        String fileName = dotIndex == -1 ? originName : originName.substring(0, dotIndex);
+        // 给定了文件名
+        if(StringUtils.isNotBlank(customizeName)) {
+            customizeName = customizeName.trim();
+            if (withSuffix) { // 检查是否有可用后缀
+                dotIndex = customizeName.lastIndexOf(".");
+                if (dotIndex == -1) {
+                    withSuffix = false;
+                } else if (dotIndex == customizeName.length() - 1) {
+                    withSuffix = false;
+                    customizeName = customizeName.substring(0, dotIndex);
+                }
+            }
+            if (withSuffix) { // 确定存在后缀
+                fileName = customizeName.substring(0, dotIndex);
+                suffix = customizeName.substring(dotIndex + 1);
+            } else { // 未给定后缀，或者给定的后缀无效，使用源文件的后缀
+                fileName = customizeName;
+            }
         }
+        UploadFileUtils.UploadResult result = new UploadFileUtils.UploadResult();
+        String suffixWithDot = StringUtils.isNotBlank(suffix) ? ("."+suffix):"";
         try {
-            // 构建临时的文件（服务器临时目录）
-            File tempFile = new File(tempPath.getAbsolutePath() + File.separator + fileName);
-            // 上传图片到 -> “临时路径”
-            multipartFile.transferTo(tempFile);
             // 构建真实的文件（永久保存）
-            File realFile = new File(realPath.getAbsolutePath() + File.separator + fileName);
+            File realFile = new File(realPath.getAbsolutePath() + File.separator + fileName + suffixWithDot);
             // 复制图片到 -> “真实路径”
-            FileUtils.copyFile(tempFile,realFile);
-            return fileName;
+            if(realFile.exists()){
+                if(repeatAble){
+                    realFile = saveFileForRepeat(multipartFile,realFile,realPath.getAbsolutePath(),fileName,suffixWithDot);
+                }else {
+                    result.uploadMessage = "上传失败，存在重复文件";
+                    logger.error("文件上传，源文件:{}，上传文件:{}，上传失败，存在重复文件"
+                            ,multipartFile.getOriginalFilename()
+                            ,realFile.getAbsolutePath());
+                    return result;
+                }
+            }else {
+                multipartFile.transferTo(realFile);
+            }
+            // 构建临时的文件（服务器临时目录）
+            File tempFile = new File(tempPath.getAbsolutePath() + File.separator + realFile.getName());
+            // 复制图片到 -> “临时路径”（以便本地服务访问）
+            FileUtils.copyFile(realFile,tempFile);
+
+            String fileRealName = realFile.getName();
+            dotIndex = fileRealName.lastIndexOf(".");
+            result.fileName = dotIndex == -1 ? fileRealName : fileRealName.substring(0, dotIndex);
+            result.suffix =  dotIndex > -1 ? fileRealName.substring(dotIndex+1) : "";
+            result.fileRealName = fileRealName;
+            result.isSuccess = true;
+            result.uploadMessage = "上传成功";
+            return result;
         }catch (Exception e){
-            logger.error(multipartFile.getOriginalFilename()+"：上传失败");
+            logger.error("文件上传，源文件:{}，上传文件名：{}，上传路径:{}，上传失败，发生异常：{}"
+                    ,multipartFile.getOriginalFilename()
+                    ,fileName + suffixWithDot
+                    ,realPath.getAbsolutePath()
+                    ,e);
+            result.uploadMessage = "上传失败，系统错误";
+            return result;
         }
-        return null;
+    }
+
+    private static File saveFileForRepeat(MultipartFile origin,File target,String savePath,String fileName,String suffixWithDot) throws IOException {
+        if(target.exists()){
+            fileName = fileName+"(1)";
+            return saveFileForRepeat(
+                    origin
+                    ,new File(savePath + File.separator + fileName + suffixWithDot)
+                    ,savePath
+                    ,fileName
+                    ,suffixWithDot
+            );
+        }else {
+            origin.transferTo(target);
+            return target;
+        }
+    }
+
+    public static class UploadResult{
+        String fileName = null;
+        String suffix = null;
+        String fileRealName = null;
+        String uploadMessage = "上传失败";
+        boolean isSuccess = false;
+
+        public String getFileName() {
+            return fileName;
+        }
+
+        public void setFileName(String fileName) {
+            this.fileName = fileName;
+        }
+
+        public String getSuffix() {
+            return suffix;
+        }
+
+        public void setSuffix(String suffix) {
+            this.suffix = suffix;
+        }
+
+        public String getFileRealName() {
+            return fileRealName;
+        }
+
+        public void setFileRealName(String fileRealName) {
+            this.fileRealName = fileRealName;
+        }
+
+        public String getUploadMessage() {
+            return uploadMessage;
+        }
+
+        public void setUploadMessage(String uploadMessage) {
+            this.uploadMessage = uploadMessage;
+        }
+
+        public boolean isSuccess() {
+            return isSuccess;
+        }
+
+        public void setSuccess(boolean success) {
+            isSuccess = success;
+        }
     }
 
     /**

@@ -87,9 +87,6 @@
         });
 
         form.on('select(clazzSelect)', function (data) {
-            console.log(data.elem); //得到select原始DOM对象
-            console.log(data.value); //得到被选中的值
-            console.log(data.othis); //得到美化后的DOM对象
             listTable.reload({
                 where: { //设定异步数据接口的额外参数，任意设
                     workId:${work.id},

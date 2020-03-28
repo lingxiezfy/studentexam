@@ -1,10 +1,10 @@
 var pathName=window.document.location.pathname;
 var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
 var basePath = window.location.protocol+"//"+window.location.host+projectName+"/";
-var qtypeSelect = function(id){
+var qtypeSelect = function(id,servicePath){
 	$.ajax({
 		type:'post',
-		url:basePath+'common/getQuestionTypeAll',
+		url:servicePath+'common/getQuestionTypeAll',
 		dataType:'json',
 		success:function(data){
 			if(data!=null && data.length>0){
@@ -18,10 +18,10 @@ var qtypeSelect = function(id){
 	})
 }
 
-var qtypeSelectWithDefault = function(id,selected){
+var qtypeSelectWithDefault = function(id,selected,servicePath){
 	$.ajax({
 		type:'post',
-		url:basePath+'common/getQuestionTypeAll',
+		url:servicePath+'common/getQuestionTypeAll',
 		dataType:'json',
 		success:function(data){
 			if(data!=null && data.length>0){

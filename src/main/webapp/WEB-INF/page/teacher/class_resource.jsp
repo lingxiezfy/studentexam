@@ -10,6 +10,7 @@
 <head>
     <title>课堂资源</title>
     <link rel="stylesheet" href="${basePath}layui/css/layui.css">
+    <link rel="stylesheet" href="${basePath}layui_ext/mouseRightMenu/mouseRightMenu.css">
 </head>
 <body style="padding-top: 50px;padding-left: 250px;">
 
@@ -27,12 +28,17 @@
 <script type="text/javascript">
 
     layui.extend({
-        fileManager: '${basePath}layui_ext/fileManager/fileManager'   // {/}的意思即代表采用自有路径，即不跟随 base 路径
-    }).use(['fileManager','layer','jquery','upload'], function() {
-        var fileManager = layui.fileManager, layer = layui.layer, $ = layui.jquery;
+        fileManager: '${basePath}layui_ext/fileManager/fileManager_src'   // {/}的意思即代表采用自有路径，即不跟随 base 路径
+        ,mouseRightMenu:'${basePath}layui_ext/mouseRightMenu/mouseRightMenu'
+    }).use(['fileManager','layer','jquery','upload','mouseRightMenu'], function() {
+        var fileManager = layui.fileManager,
+            layer = layui.layer,
+            $ = layui.jquery,
+            mouseRightMenu = layui.mouseRightMenu ;
         var upload = layui.upload;
         var upIns = upload.render({
             elem: '#uploadResourceBtn' //绑定元素
+            ,accept: 'file'
             , url: '${basePath}teacher/uploadResource' //上传接口
             , field: 'file[]'
         });
@@ -42,28 +48,33 @@
             , id: 'fmTest'
             , btn_upload: true
             , btn_create: true
-            , icon_url: '${basePath}layui_ext/fileManager/ico/'
+            , file_base: '${basePath}'
+            , icon_url: 'layui_ext/fileManager/ico/'
             , url: '${basePath}teacher/resourceList'
-            , thumb: {'nopic': '${basePath}layui_ext/fileManager/ico/null-100x100.jpg', 'width': 100, 'height': 100}
+            , thumb: {'nopic': 'layui_ext/fileManager/ico/null-100x100.jpg', 'width': 100, 'height': 68}
             , parseData: function (res) {
                 /*
                 data:[{
-                    thumb:文件地址用于显示
+                    name:文件名
+                    ,thumb:文件地址用于显示
                     ,type:文件类型  directory文件夹,png|gif|png|image图片,其它任意
                     ,path:文件夹路径用于打开本文件夹
                 }]
                 */
+                if(res.data){
+                    for(var i = 0;i<res.data.length;i++){
+                        res.data[i].thumb = '${basePath}'+res.data[i].thumb;
+                    }
+                }
                 let _res = {};
                 _res.code = 0;
                 _res.data = res.data;
                 _res.count = res.count;
+                _res.name = res.name;
                 return _res;
             }
-            , done: function (res, curr, count) {
-                console.log(res,curr,count)
-            }
         });
-        //监听图片上传事件
+        //监听上传事件
         fileManager.on('uploadfile(manageResource)', function(obj){
             //obj.obj 当前对象
             //obj.path 路径
@@ -83,9 +94,80 @@
             //obj.path 路径
             $.post('${basePath}teacher/createFolder',{'folder':obj.folder,'path':obj.path},function(e){
                 layer.msg(e.msg);
-                if(e.code == 1){
+                if(e.success){
                     fileManager.reload('fmTest');
                 }
+            })
+        });
+
+        //监听选择事件
+        // fileManager.on('fileClick(manageResource)', function (obj) {
+        //     //obj.obj 当前对象
+        //     //obj.data 当前文件数据
+        //     var data = obj.data;
+        //     layer.alert(JSON.stringify(data), {
+        //         title: '当前数据：'
+        //     });
+        // });
+
+        //监听右键事件
+        fileManager.on('rightClick(manageResource)', function (obj) {
+            //obj.obj 当前对象
+            //obj.data 当前文件数据
+            var data = obj.data;
+            var ele = obj.obj;
+            data['parent'] = obj.parent;
+            var menu_data=[
+                {'data':data,'type':1,'title':'取消'},
+            ];
+            if (ele.data('type') !== 'DIR') {
+                menu_data.push({'data':data,'type':2,'title':'下载'})
+            }
+            menu_data.push({'data':data,'type':3,'title':'删除'});
+            mouseRightMenu.open(menu_data,{area:"80px"},function(menu){
+                // layer.alert(menu.type+"  "+JSON.stringify(menu.data),{title:menu.title});
+                switch (menu.type) {
+                    case 1:
+                        break;
+                    case 2:
+                        layer.open({
+                            type: 2,
+                            title: '下载',
+                            shadeClose: true,
+                            shade: 0.8,
+                            area: ['530px', '80%'],
+                            content: menu.data.thumb //iframe的url
+                        });
+                        break;
+                    case 3: // 删除
+                        layer.confirm('确认要删除吗，不可恢复？', {
+                            icon:3,
+                            btn: ['确认','取消'] //按钮
+                        }, function(){
+                            $.ajax({
+                                url:'${basePath}teacher/deleteResource',
+                                method: 'post',
+                                data:{
+                                    name:menu.data.name,
+                                    parent:menu.data.parent
+                                },
+                                success:function (res) {
+                                    if(res){
+                                        layer.msg('删除成功', {icon: 1});
+                                        fileManager.reload('fmTest');
+                                    }else {
+                                        layer.msg('删除失败', {icon: 2});
+                                    }
+                                },
+                                error:function () {
+                                    layer.msg('删除失败,连接服务器失败', {icon: 2});
+                                }
+                            });
+                        });
+                        break;
+                    default:break
+                }
+
             })
         });
     });
