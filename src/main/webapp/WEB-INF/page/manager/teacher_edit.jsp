@@ -57,7 +57,7 @@
         	  $.ajax({
         		  data:$("#myform").serialize(),	//获取form中的所有数据
         		  type:'post',
-        		  url:'${basePath}manager/updateTeacher',
+        		  url:'${basePath}adminManager/updateTeacher',
         		  success:function(data){	//请求成功回调函数
         			  if(data == 'ok'){
         				  parent.layer.alert("修改成功",function(){

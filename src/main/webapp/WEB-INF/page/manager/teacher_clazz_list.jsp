@@ -21,7 +21,7 @@
         <div class="col-md-12">
           <div class="tile">
            <div class="tile-body">
-              <form class="row" action="${basePath }manager/clazz" method="post">
+              <form class="row" action="${basePath }adminManager/clazz" method="post">
                 <div class="form-group col-md-3">
                   <select class="form-control" id="fkGrade" name="fkGrade" onchange="clazzSelect('fkGrade','fkMajor','fkClazz')">
                      <option value = "">--请选择年级--</option>
@@ -93,7 +93,7 @@
     			function(){//确定
     				$.ajax({
     					type:'post',
-    					url:'${basePath}manager/delTeacherClazz/'+tid,
+    					url:'${basePath}adminManager/delTeacherClazz/'+tid,
     					success:function(data){
     						if(data=='ok'){
     							$("#tr"+tid).remove();
@@ -112,7 +112,7 @@
     		if(cid!=null && cid!='' && cid!= undefined){
     			$.ajax({
     	    		type:"post",
-    	    		url:"${basePath}manager/teaClazzSelect",
+    	    		url:"${basePath}adminManager/teaClazzSelect",
     	    		data:{"fkTeacher":tid,"fkClazz":cid},
     	    		success:function(data){
     	    			if(data=='ok'){

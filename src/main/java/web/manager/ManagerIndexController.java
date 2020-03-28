@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Description:跳转到主页
  */
 @Controller
-@RequestMapping("/manager")
+@RequestMapping("/adminManager")
 public class ManagerIndexController {
     /**
      * 跳转到主页

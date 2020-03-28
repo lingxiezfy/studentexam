@@ -27,7 +27,7 @@
           <div class="tile">
            
            <div class="tile-body">
-              <form class="row" action="${basePath }manager/major" method="post">
+              <form class="row" action="${basePath }adminManager/major" method="post">
                 <div class="form-group col-md-3">
                   <label class="control-label">专业：</label>
                   <div class="btn-group" data-toggle="buttons">
@@ -67,7 +67,7 @@
               </tbody>
             </table>
             </form>
-            <p:page action="manager/major"/>
+            <p:page action="adminManager/major"/>
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@
     			function(){//确定
     				$.ajax({
     					type:'post',
-    					url:'${basePath}manager/delMajor/'+mid,
+    					url:'${basePath}adminManager/delMajor/'+mid,
     					success:function(data){
     						if(data=='ok'){
     							$("#tr"+mid).remove();
@@ -101,7 +101,7 @@
 	    		type:2,//弹出iframe层
 	    		title:'添加专业',
 	    		area:['500px','220px'],
-	    		content:'${basePath}manager/toAddMajor',
+	    		content:'${basePath}adminManager/toAddMajor',
 	    		btn:'添加',
 	    		skin:'my-skin',
 	    		yes:function(index,layero){

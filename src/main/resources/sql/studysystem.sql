@@ -291,12 +291,12 @@ CREATE TABLE `menu`  (
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES (1, '主页', 'manager/toIndex', 'fa-home', NULL, NULL, 1, 1, 0);
-INSERT INTO `menu` VALUES (2, '年级管理', 'manager/grade', 'fa-building', NULL, NULL, 1, 2, 0);
-INSERT INTO `menu` VALUES (3, '专业管理', 'manager/major', 'fa-graduation-cap', NULL, NULL, 1, 3, 0);
-INSERT INTO `menu` VALUES (4, '班级管理', 'manager/clazz', 'fa-cube', NULL, NULL, 1, 4, 0);
-INSERT INTO `menu` VALUES (5, '学生管理', 'manager/stuList', 'fa-users', NULL, NULL, 1, 5, 0);
-INSERT INTO `menu` VALUES (6, '教师管理', 'manager/teaList', 'fa-user', NULL, NULL, 1, 6, 0);
+INSERT INTO `menu` VALUES (1, '主页', 'adminManager/toIndex', 'fa-home', NULL, NULL, 1, 1, 0);
+INSERT INTO `menu` VALUES (2, '年级管理', 'adminManager/grade', 'fa-building', NULL, NULL, 1, 2, 0);
+INSERT INTO `menu` VALUES (3, '专业管理', 'adminManager/major', 'fa-graduation-cap', NULL, NULL, 1, 3, 0);
+INSERT INTO `menu` VALUES (4, '班级管理', 'adminManager/clazz', 'fa-cube', NULL, NULL, 1, 4, 0);
+INSERT INTO `menu` VALUES (5, '学生管理', 'adminManager/stuList', 'fa-users', NULL, NULL, 1, 5, 0);
+INSERT INTO `menu` VALUES (6, '教师管理', 'adminManager/teaList', 'fa-user', NULL, NULL, 1, 6, 0);
 INSERT INTO `menu` VALUES (7, '试卷管理', 'teacher/examPaper', 'fa-file-text-o', NULL, NULL, 1, 7, 0);
 INSERT INTO `menu` VALUES (8, '单选题', 'teacher/single', 'fa-check-square-o', NULL, NULL, 1, 8, 0);
 INSERT INTO `menu` VALUES (9, '多选题', 'teacher/multi', 'fa-bolt ', NULL, NULL, 1, 9, 0);

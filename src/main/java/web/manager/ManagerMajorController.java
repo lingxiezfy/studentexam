@@ -23,7 +23,7 @@ import java.util.List;
  * @Description:跳转到专业管理
  */
 @Controller
-@RequestMapping("/manager")
+@RequestMapping("/adminManager")
 public class ManagerMajorController {
     @Autowired
     private MajorService majorService;

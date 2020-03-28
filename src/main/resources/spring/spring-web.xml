@@ -66,8 +66,8 @@
             <mvc:exclude-mapping path="/**/*.jpg"/>
             <mvc:exclude-mapping path="/**/*.jpeg"/>
             <mvc:exclude-mapping path="/**/*.Login"/>
-            <mvc:exclude-mapping path="/manager/student_list"/>
-            <mvc:exclude-mapping path="/manager/stuList"/>
+            <mvc:exclude-mapping path="/adminManager/student_list"/>
+            <mvc:exclude-mapping path="/adminManager/stuList"/>
             <bean class="interceptor.LoginInterceptor"/>
 <!--            <bean class="interceptor.LoginInterceptor"/>-->
         </mvc:interceptor>

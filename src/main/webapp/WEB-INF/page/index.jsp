@@ -15,6 +15,14 @@
       <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       <!-- Navbar Right Menu-->
       <ul class="app-nav">
+        <c:if test="${sessionScope.role == 2 || sessionScope.role == 3}">
+<%--          教师和系统管理员可以发布公告--%>
+          <li >
+            <a class="app-nav__item" href="javascript:publicNotice('${sessionScope.role}','${sessionScope.user.id}')">
+              <i class="fa fa-flag fa-lg"></i> &nbsp;发布公告
+            </a>
+          </li>
+        </c:if>
         <!-- User Menu-->
         <li class="dropdown">
           <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">
@@ -47,7 +55,7 @@
       <iframe name="pageFrame" id="pageFrame" src="teacher/toIndex" width="100%" height="633px" frameborder="0"></iframe>
     </c:if>
     <c:if test="${role==3}">
-      <iframe name="pageFrame" id="pageFrame" src="manager/toIndex" width="100%" height="633px" frameborder="0"></iframe>
+      <iframe name="pageFrame" id="pageFrame" src="adminManager/toIndex" width="100%" height="633px" frameborder="0"></iframe>
     </c:if>
     <script type="text/javascript" src="${basePath }js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${basePath }js/popper.min.js"></script>
@@ -59,7 +67,7 @@
     	/* 切换菜单 */
     	var changeMenu = function(url){
     		document.getElementById("pageFrame").src = '${basePath}'+url;
-    	}
+    	};
     	
     	var toEditPwd = function(){
     		layer.open({
@@ -76,7 +84,27 @@
 	    		}
 	    	
 	    	})
-    	}
+    	};
+
+    	// 发布公告
+    	var publicNotice = function (userRole,userId) {
+    	    layer.open({
+                type: 2,
+                title:"发布公告",
+                area:['500px','330px'],
+                fixed : false,
+                content:'${basePath}notice/toPublish',
+                btn:['发布','取消'],
+                yes:function (index,layero) {
+                    // 获取弹出层中的form表单元素
+                    var formSubmit = layer.getChildFrame('.layui-form .layui-btn', index).click();
+                    // 获取表单中的提交按钮（在我的表单里第一个button按钮就是提交按钮，使用find方法寻找即可）
+                    // var submited = formSubmit.find('.layui-form .layui-btn')[0]
+                    // 触发点击事件，会对表单进行验证，验证成功则提交表单，失败则返回错误信息
+                    // submited.click();
+                }
+            });
+        }
     </script>
   </body>
 </html>

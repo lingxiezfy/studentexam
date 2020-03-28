@@ -22,7 +22,7 @@ import java.util.List;
  * @Description:跳转到年级管理
  */
 @Controller
-@RequestMapping("/manager")
+@RequestMapping("/adminManager")
 public class ManagerGradeController {
     @Autowired
     private GradeService gradeService;

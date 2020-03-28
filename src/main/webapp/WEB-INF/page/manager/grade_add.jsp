@@ -60,7 +60,7 @@
         		  async:true,
         		  data:$("#myform").serialize(),	//获取form中的所有数据
         		  type:'post',
-        		  url:'${basePath}manager/saveGrade',
+        		  url:'${basePath}adminManager/saveGrade',
         		  success:function(data){	//请求成功回调函数
         			  if(data == 'ok'){
         				  parent.layer.alert("添加成功",function(){

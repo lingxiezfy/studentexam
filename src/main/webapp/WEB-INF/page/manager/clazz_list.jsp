@@ -27,7 +27,7 @@
           <div class="tile">
            
            <div class="tile-body">
-              <form class="row" action="${basePath }manager/clazz" method="post">
+              <form class="row" action="${basePath }adminManager/clazz" method="post">
                 <div class="form-group col-md-3">
                   <label class="control-label">年级：</label>
                   <div class="btn-group" data-toggle="buttons">
@@ -77,7 +77,7 @@
               </tbody>
             </table>
             </form>
-            <p:page action="manager/clazz"/>
+            <p:page action="adminManager/clazz"/>
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@
     			function(){//确定
     				$.ajax({
     					type:'post',
-    					url:'${basePath}manager/delClazz/'+cid,
+    					url:'${basePath}adminManager/delClazz/'+cid,
     					success:function(data){
     						if(data=='ok'){
     							$("#tr"+cid).remove();
@@ -111,7 +111,7 @@
 	    		type:2,//弹出iframe层
 	    		title:'添加班级',
 	    		area:['500px','350px'],
-	    		content:'${basePath}manager/toAddClazz',
+	    		content:'${basePath}adminManager/toAddClazz',
 	    		btn:'添加',
 	    		skin:'my-skin',
 	    		yes:function(index,layero){

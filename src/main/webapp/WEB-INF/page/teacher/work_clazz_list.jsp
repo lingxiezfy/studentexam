@@ -21,7 +21,7 @@
         <div class="col-md-12">
           <div class="tile">
            <div class="tile-body">
-              <form class="row" action="${basePath }manager/clazz" method="post">
+              <form class="row" action="${basePath }adminManager/clazz" method="post">
                 <div class="form-group col-md-3">
                   <select class="form-control" id="fkGrade" name="fkGrade" onchange="clazzSelect('fkGrade','fkMajor','fkClazz')">
                      <option value = "">--请选择年级--</option>

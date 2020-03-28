@@ -26,7 +26,7 @@ import java.util.Map;
  * @Description:跳转到学生管理
  */
 @Controller
-@RequestMapping("/manager")
+@RequestMapping("/adminManager")
 public class ManagerStudentController {
     @Autowired
     private StudentService studentService;

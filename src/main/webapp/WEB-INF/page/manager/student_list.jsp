@@ -27,7 +27,7 @@
           <div class="tile">
            
            <div class="tile-body">
-              <form class="row" action="${basePath }manager/stuList" method="post">
+              <form class="row" action="${basePath }adminManager/stuList" method="post">
                 <div class="form-group col-md-3">
                   <label class="control-label">年级：</label>
                   <div class="btn-group" data-toggle="buttons">
@@ -86,7 +86,7 @@
               	</c:if>
               </tbody>
             </table>
-              <p:page action="manager/stuList"/>
+              <p:page action="adminManager/stuList"/>
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@
     			function(){//确定
     				$.ajax({
     					type:'post',
-    					url:'${basePath}manager/deleteStudent/'+sid,
+    					url:'${basePath}adminManager/deleteStudent/'+sid,
     					success:function(data){
     						if(data=='ok'){
     							$("#tr"+sid).remove();
@@ -120,7 +120,7 @@
 	    		type:2,//弹出iframe层
 	    		title:'添加学生',
 	    		area:['500px','450px'],
-	    		content:'${basePath}manager/toAddStudent',
+	    		content:'${basePath}adminManager/toAddStudent',
 	    		btn:'添加',
 	    		skin:'my-skin',
 	    		yes:function(index,layero){
@@ -137,7 +137,7 @@
 	    		type:2,//弹出iframe层
 	    		title:'编辑学生',
 	    		area:['500px','450px'],
-	    		content:'${basePath}manager/toEditStudent/'+sid,
+	    		content:'${basePath}adminManager/toEditStudent/'+sid,
 	    		btn:'修改',
 	    		skin:'my-skin',
 	    		yes:function(index,layero){

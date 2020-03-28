@@ -27,7 +27,7 @@
           <div class="tile">
            
            <div class="tile-body">
-              <form class="row" action="${basePath }manager/teaList" method="post">
+              <form class="row" action="${basePath }adminManager/teaList" method="post">
                 <div class="form-group col-md-3">
                   <label class="control-label">姓名：</label>
                   <div class="btn-group" data-toggle="buttons">
@@ -72,7 +72,7 @@
               	</c:if>
               </tbody>
             </table>
-              <p:page action="manager/teaList"/>
+              <p:page action="adminManager/teaList"/>
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@
     			function(){//确定
     				$.ajax({
     					type:'post',
-    					url:'${basePath}manager/deleteTeacher/'+tid,
+    					url:'${basePath}adminManager/deleteTeacher/'+tid,
     					success:function(data){
     						if(data=='ok'){
     							$("#tr"+tid).remove();
@@ -106,7 +106,7 @@
 	    		type:2,//弹出iframe层
 	    		title:'添加教师',
 	    		area:['500px','280px'],
-	    		content:'${basePath}manager/toAddTeacher',
+	    		content:'${basePath}adminManager/toAddTeacher',
 	    		btn:'添加',
 	    		skin:'my-skin',
 	    		yes:function(index,layero){
@@ -123,7 +123,7 @@
 	    		type:2,//弹出iframe层
 	    		title:'编辑教师',
 	    		area:['500px','280px'],
-	    		content:'${basePath}manager/toEditTeacher/'+tid,
+	    		content:'${basePath}adminManager/toEditTeacher/'+tid,
 	    		btn:'修改',
 	    		skin:'my-skin',
 	    		yes:function(index,layero){
@@ -141,7 +141,7 @@
 	    		type:2,//弹出iframe层
 	    		title:'所属班级',
 	    		area:['800px','500px'],
-	    		content:'${basePath}manager/toSelectClazz/'+tid,
+	    		content:'${basePath}adminManager/toSelectClazz/'+tid,
 	    		skin:'my-skin',
 	    	})
     	}

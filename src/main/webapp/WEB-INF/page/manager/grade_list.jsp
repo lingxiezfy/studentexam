@@ -26,7 +26,7 @@
           <div class="tile">
            
            <div class="tile-body">
-              <form class="row" action="${basePath }manager/grade" method="post">
+              <form class="row" action="${basePath }adminManager/grade" method="post">
                 <div class="form-group col-md-3">
                   <label class="control-label">年级：</label>
                   <div class="btn-group" data-toggle="buttons">
@@ -66,7 +66,7 @@
               </tbody>
             </table>
             </form>
-              <p:page action="manager/grade"/>
+              <p:page action="adminManager/grade"/>
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@
     			function(){//确定
     				$.ajax({
     					type:'post',
-    					url:'${basePath}manager/delGrade/'+gid,
+    					url:'${basePath}adminManager/delGrade/'+gid,
     					success:function(data){
     						if(data=='ok'){
     							$("#tr"+gid).remove();
@@ -100,7 +100,7 @@
 	    		type:2,//弹出iframe层
 	    		title:'添加年级',
 	    		area:['500px','220px'],
-	    		content:'${basePath}manager/toAddGrade',
+	    		content:'${basePath}adminManager/toAddGrade',
 	    		btn:'添加',  //多个按钮['','',...]
 	    		skin:'my-skin',
 	    		yes:function(index,layero){

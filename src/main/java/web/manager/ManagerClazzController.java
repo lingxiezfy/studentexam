@@ -23,7 +23,7 @@ import java.util.Map;
  * @Description:跳转到班级管理
  */
 @Controller
-@RequestMapping("/manager")
+@RequestMapping("/adminManager")
 public class ManagerClazzController {
     @Autowired
     private ClazzService clazzService;

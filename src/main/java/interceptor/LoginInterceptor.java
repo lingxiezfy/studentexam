@@ -50,7 +50,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 }
             }
             //登录:管理员
-            if(uri.startsWith("/manager")){
+            if(uri.startsWith("/adminManager")){
                 if(roleId != 3){
                     httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/toLogin");
                     return false;
