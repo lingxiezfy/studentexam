@@ -628,4 +628,25 @@ CREATE TABLE `work_submit`  (
   CONSTRAINT `work_result_work` FOREIGN KEY (`fk_work`) REFERENCES `work` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学生作业提交结果表' ROW_FORMAT = Compact;
 
+
+-- ----------------------------
+-- Table structure for message 消息流水表
+-- ----------------------------
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+                           `message_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '消息id',
+                           `from_role` int(11) DEFAULT 0 not null COMMENT '发送用户角色',
+                           `from_id` int(11) DEFAULT 0 not null COMMENT '发送用户id',
+                           `to_role` int(11) DEFAULT 0 not NULL COMMENT '接收用户角色',
+                           `to_id` int(11) DEFAULT 0 not NULL COMMENT '接收用户id',
+                           `message_content` varchar(500) default '' NOT NULL COMMENT '消息内容',
+                           `message_type` int(11) DEFAULT 0 not null COMMENT '消息类型(1:系统公告,2:班级通知)',
+                           `origin_source` int(11) DEFAULT 0 not NULL COMMENT '来源Id(消息类型1:0，2:班级_老师的关联Id)',
+                           read_state int(11) default 0 not null comment '是否已读（0：未读，1：已读）',
+                           create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+                           update_time datetime default CURRENT_TIMESTAMP not null comment '更新时间',
+                           PRIMARY KEY (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '消息流水表';
+
+
 SET FOREIGN_KEY_CHECKS = 1;

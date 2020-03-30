@@ -106,7 +106,11 @@
 <!--        <table tableName="work_status" enableCountByExample="false" enableUpdateByExample="false"-->
 <!--                	enableSelectByExample="false" enableDeleteByExample="false"-->
 <!--                	selectByExampleQueryId="false"></table>-->
-        <table tableName="work_correcting" enableCountByExample="false" enableUpdateByExample="false"
+<!--        <table tableName="work_correcting" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableSelectByExample="false" enableDeleteByExample="false"-->
+<!--               selectByExampleQueryId="false"></table>-->
+
+        <table tableName="message" enableCountByExample="false" enableUpdateByExample="false"
                enableSelectByExample="false" enableDeleteByExample="false"
                selectByExampleQueryId="false"></table>
     </context>
