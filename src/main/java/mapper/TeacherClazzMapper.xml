@@ -96,4 +96,11 @@
           left join teacher t on tc.fk_teacher = t.id
       where t.del_flag = 0 and tc.fk_clazz = #{clazzId} ;
     </select>
+    <select id="selectTeachClass" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher_clazz
+        where fk_teacher = #{teacherId}
+
+    </select>
 </mapper>

@@ -110,7 +110,11 @@
 <!--               enableSelectByExample="false" enableDeleteByExample="false"-->
 <!--               selectByExampleQueryId="false"></table>-->
 
-        <table tableName="message" enableCountByExample="false" enableUpdateByExample="false"
+<!--        <table tableName="message" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableSelectByExample="false" enableDeleteByExample="false"-->
+<!--               selectByExampleQueryId="false"></table>-->
+
+        <table tableName="" enableCountByExample="false" enableUpdateByExample="false"
                enableSelectByExample="false" enableDeleteByExample="false"
                selectByExampleQueryId="false"></table>
     </context>

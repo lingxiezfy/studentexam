@@ -1,6 +1,4 @@
-var socketServerUrl = "ws://localhost:8081/ws/server";
-
-var sendAllUrl = serviceUrlBase +"ws/sendAll";
+var socketServerUrl = "ws://localhost:8080/ws/server";
 
 var socket;
 if (typeof (WebSocket) == "undefined") {
@@ -43,48 +41,23 @@ if (typeof (WebSocket) == "undefined") {
     };
 }
 
-// 处理一条解析后的消息（统一的处理方法，特别的处理方式可在页面中重载）
-function addOneMessage(message){
-    var span = $('.userNotice.badge');
-    //添加徽章通知
-    if(span){
-        var n = span.html();
-        if(!n){
-            n = 0;
-        }
-        span.html(parseInt(n)+1)
-    }
-    toastr.options.timeOut=5000;
-    toastr.options.onclick = function () {
-        toPage("notice.html?messageId="+(message.third?message.third:0));
-    };
-    toastr.options.extendedTimeOut = 2000;
-    toastr.options.progressBar = true;
-    toastr.options.positionClass = 'toast-top-right';
-    if(message.messageType === "SystemNotice"){
-        toastr.warning("系统公告："+"<br/>"+message.content+"&nbsp;前往查看>>>");
-    }else {
-        toastr.info(message.author.nickname+"<br/>"+message.content+"&nbsp;前往查看>>>");
-    }
-    toastr.options.timeOut=1200;
-    toastr.options.onclick = null;
-    toastr.options.progressBar = false;
-    toastr.options.extendedTimeOut = 1000;
-    toastr.options.positionClass = 'toast-bottom-right';
-}
-
 // 向服务器注册身份
-function registerToServer(groupId,userId) {
-    sendToServer('group;'+groupId+';in;'+userId);
-}
-// 向服务器发送组内群发消息
-function sendMessage(groupId,message) {
-    sendToServer('group;'+groupId+';msg;'+message);
+function registerToServer(groupId,role,userId) {
+    sendToServer('group;'+groupId+';in;'+role+';'+userId);
 }
 // 向服务器发送群发消息
 function sendToServer(message) {
     if(message){
-        socket.send(message);
+        if(socket.readyState === 1){
+            socket.send(message);
+        }else {
+            console.log("消息发送失败，延迟发送");
+            setTimeout(function () {
+                sendToServer(message)
+            },2000)
+        }
+    }else {
+        console.log("消息发送失败:"+message);
     }
 }
 

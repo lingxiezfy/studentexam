@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="${basePath }css/layer-skin.css">
     <link rel="stylesheet" type="text/css"
           href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="${basePath }tools/toaster/toaster.min.css">
+    <link rel="stylesheet" type="text/css" href="${basePath}toaster/toastr.min.css">
     <link rel="BOOKMARK" href="${basePath }images/icon.png">
 </head>
 <body class="app sidebar-mini rtl">
@@ -38,7 +38,7 @@
             <ul class="dropdown-menu settings-menu dropdown-menu-right">
                 <li><a class="dropdown-item" href="javascript:toEditPwd()"><i class="fa fa-user-circle-o fa-lg"></i>
                     修改密码</a></li>
-                <li><a class="dropdown-item" href="${basePath }logOut"><i class="fa fa-sign-out fa-lg"></i> 退出</a></li>
+                <li><a class="dropdown-item" href="${basePath}logOut"><i class="fa fa-sign-out fa-lg"></i> 退出</a></li>
             </ul>
         </li>
     </ul>
@@ -70,8 +70,9 @@
 <script type="text/javascript" src="${basePath }js/bootstrap-4.4.1.min.js"></script>
 <script type="text/javascript" src="${basePath }js/main.js"></script>
 <script type="text/javascript" src="${basePath }tools/layer/layer.js"></script>
-<script type="text/javascript" src="${basePath }tools/toaster/toaster.min.js"></script>
+<script type="text/javascript" src="${basePath }toaster/toastr.min.js"></script>
 <script type="text/javascript" src="${basePath }js/mySocket.js"></script>
+
 <script type="text/javascript">
     /* 切换菜单 */
     var changeMenu = function (url) {
@@ -96,7 +97,7 @@
     };
 
     // 发布公告
-    var publicNotice = function (userRole, userId) {
+    function publicNotice(userRole, userId) {
         layer.open({
             type: 2,
             title: "发布公告",
@@ -114,6 +115,39 @@
             }
         });
     }
+
+    $(function () {
+        registerToServer(${groupId},${userCommon.role},${userCommon.id});
+    });
+
+    toastr.options.timeOut=5000;
+    toastr.options.extendedTimeOut = 2000;
+    toastr.options.progressBar = true;
+    toastr.options.positionClass = 'toast-top-right';
+    // 处理一条解析后的消息
+    function addOneMessage(message){
+        // var span = $('.userNotice.badge');
+        // //添加徽章通知
+        // if(span){
+        //     var n = span.html();
+        //     if(!n){
+        //         n = 0;
+        //     }
+        //     span.html(parseInt(n)+1)
+        // }
+        toastr.options.onclick = function () {
+            changeMenu("notice.html?messageId="+(message.messageId?message.messageId:0));
+        };
+        if(message.messageType === "SystemNotice"){
+            toastr.warning("系统公告："+message.title+"<br/>"+message.content+"&nbsp;前往查看>>>");
+        }else if(message.messageType === "ClassNotice"){
+            toastr.info("班级通知："+message.title+"<br/>"+message.content+"&nbsp;前往查看>>>");
+        }else {
+            console.log("未解析消息！")
+        }
+        toastr.options.onclick = null;
+    }
+
 </script>
 </body>
 </html>

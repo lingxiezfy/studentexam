@@ -21,6 +21,8 @@ public interface TeacherClazzMapper {
 
     TeacherClazz selectByFKTeacherAndFKClazz(TeacherClazz teacherClazz);
 
+    List<TeacherClazz> selectTeachClass(Integer teacherId);
+
     List<Map> selectByFKTeacher(Integer teacherId);
 
     /**

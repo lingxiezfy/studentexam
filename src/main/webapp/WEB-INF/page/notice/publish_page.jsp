@@ -47,15 +47,34 @@
         var $ = layui.jquery;
 
         form.on('submit(*)', function(data){
-            console.log(data.field);//当前容器的全部表单字段，名值对形式：{name: value}
-            // 提交成功后返回信息，关闭弹出层
-            parent.layer.msg('操作成功',{
-                icon:1,
-                time: 1000
+            $.ajax({
+                url: '${basePath}notice/publish',
+                data:data.field,
+                method:'post',
+                success:function (res) {
+                    if(res.success){
+                        parent.layer.msg(res.message,{
+                            icon:1,
+                            time: 1000
+                        });
+                        // 提交成功后返回信息，关闭弹出层
+                        //当你在iframe页面关闭自身时
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index);
+                    }else {
+                        parent.layer.msg(res.message,{
+                            icon:5,
+                            time: 1000
+                        });
+                    }
+                },
+                error:function () {
+                    parent.layer.msg("服务器访问失败！",{
+                        icon:2,
+                        time: 1000
+                    });
+                }
             });
-            //当你在iframe页面关闭自身时
-            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-            parent.layer.close(index);
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
 

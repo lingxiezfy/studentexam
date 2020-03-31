@@ -90,7 +90,7 @@ public class SocketServer {
      * @param user
      * @return
      */
-    private int generateGroupId(UserCommon user){
+    public static int generateGroupId(UserCommon user){
         int groupId = 0;
         if(user != null) {
             switch (user.getRole()) {
@@ -192,7 +192,7 @@ public class SocketServer {
     /**
      * 服务器主动推送系统通知(广播)
      */
-    private static void sendSystemNotice(UserCommon admin,String title, String content,Integer messageId) {
+    public static void sendSystemNotice(UserCommon admin,String title, String content,Integer messageId) {
         if(admin.getRole() != 3){
             log.error("{}无权限发送系统通知,消息内容{}:{}", admin,title,content);
             return;
@@ -208,14 +208,14 @@ public class SocketServer {
     /**
      * 服务器推送群消息
      */
-    private void sendToGroup(UserCommon user, Integer groupId,MessageTypeEnum messageType, String title, String content) {
+    public static void sendToGroup(UserCommon user, Integer groupId,MessageTypeEnum messageType, String title, String content, Integer messageId) {
         if(groupId == null || groupId == 0){
             log.error("发送消息失败，{}错误的讨论组",groupId);
             return;
         }
         CopyOnWriteArraySet<Session> groupSessions = groupSessionMap.get(groupId);
         if(groupSessions != null && groupSessions.size() > 0 && StringUtils.isNotBlank(content)){
-            String message = JSON.toJSONString(new MessageBase(user, messageType,title,content,new Date()));
+            String message = JSON.toJSONString(new MessageBase(user, messageType,title,content,new Date(), messageId));
             for(Session session : groupSessions){
                 if(session.isOpen()){
                     SendMessage(session,message);
