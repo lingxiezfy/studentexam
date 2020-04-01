@@ -7,6 +7,7 @@ import entity.Manager;
 import entity.Student;
 import entity.Teacher;
 import mapper.ManagerMapper;
+import mapper.MessageMapper;
 import mapper.StudentMapper;
 import mapper.TeacherMapper;
 import org.apache.commons.lang.StringUtils;

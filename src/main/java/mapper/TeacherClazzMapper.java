@@ -21,6 +21,9 @@ public interface TeacherClazzMapper {
 
     TeacherClazz selectByFKTeacherAndFKClazz(TeacherClazz teacherClazz);
 
+    /**
+     * 获取教师 的 教学班级
+     */
     List<TeacherClazz> selectTeachClass(Integer teacherId);
 
     List<Map> selectByFKTeacher(Integer teacherId);

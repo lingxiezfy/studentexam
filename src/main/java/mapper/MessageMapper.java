@@ -1,6 +1,10 @@
 package mapper;
 
 import entity.Message;
+import org.apache.ibatis.annotations.Param;
+import web.manager.UserCommon;
+
+import java.util.List;
 
 public interface MessageMapper {
     int deleteByPrimaryKey(Integer messageId);
@@ -14,4 +18,6 @@ public interface MessageMapper {
     int updateByPrimaryKeySelective(Message record);
 
     int updateByPrimaryKey(Message record);
+
+    List<Message> query(@Param("record") Message record,@Param("user") UserCommon userCommon);
 }

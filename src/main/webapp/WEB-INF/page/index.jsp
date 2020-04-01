@@ -27,6 +27,11 @@
                 </a>
             </li>
         </c:if>
+        <li>
+            <a class="app-nav__item" href="javascript:changeMenu('notice/list')">
+                <i class="fa fa-bell fa-lg"></i> &nbsp;通知 &nbsp;<span class="userNotice badge"></span>
+            </a>
+        </li>
         <!-- User Menu-->
         <li class="dropdown">
             <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">
@@ -74,6 +79,7 @@
 <script type="text/javascript" src="${basePath }js/mySocket.js"></script>
 
 <script type="text/javascript">
+    registerToServer(${groupId},${userCommon.role},${userCommon.id});
     /* 切换菜单 */
     var changeMenu = function (url) {
         document.getElementById("pageFrame").src = '${basePath}' + url;
@@ -116,27 +122,23 @@
         });
     }
 
-    $(function () {
-        registerToServer(${groupId},${userCommon.role},${userCommon.id});
-    });
-
     toastr.options.timeOut=5000;
     toastr.options.extendedTimeOut = 2000;
     toastr.options.progressBar = true;
     toastr.options.positionClass = 'toast-top-right';
     // 处理一条解析后的消息
     function addOneMessage(message){
-        // var span = $('.userNotice.badge');
-        // //添加徽章通知
-        // if(span){
-        //     var n = span.html();
-        //     if(!n){
-        //         n = 0;
-        //     }
-        //     span.html(parseInt(n)+1)
-        // }
+        var span = $('.userNotice.badge');
+        //添加徽章通知
+        if(span){
+            var n = span.html();
+            if(!n){
+                n = 0;
+            }
+            span.html(parseInt(n)+1)
+        }
         toastr.options.onclick = function () {
-            changeMenu("notice.html?messageId="+(message.messageId?message.messageId:0));
+            changeMenu('notice/list?messageId='+(message.messageId?message.messageId:0));
         };
         if(message.messageType === "SystemNotice"){
             toastr.warning("系统公告："+message.title+"<br/>"+message.content+"&nbsp;前往查看>>>");

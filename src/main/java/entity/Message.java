@@ -9,9 +9,13 @@ public class Message {
 
     private Integer fromId;
 
+    private String fromName;
+
     private Integer toRole;
 
     private Integer toId;
+
+    private String messageTitle;
 
     private String messageContent;
 
@@ -49,6 +53,14 @@ public class Message {
         this.fromId = fromId;
     }
 
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName == null ? null : fromName.trim();
+    }
+
     public Integer getToRole() {
         return toRole;
     }
@@ -63,6 +75,14 @@ public class Message {
 
     public void setToId(Integer toId) {
         this.toId = toId;
+    }
+
+    public String getMessageTitle() {
+        return messageTitle;
+    }
+
+    public void setMessageTitle(String messageTitle) {
+        this.messageTitle = messageTitle == null ? null : messageTitle.trim();
     }
 
     public String getMessageContent() {
