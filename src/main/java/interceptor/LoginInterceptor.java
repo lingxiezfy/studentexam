@@ -1,11 +1,7 @@
 package interceptor;
 
-import entity.Manager;
-import entity.Student;
-import entity.Teacher;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import web.manager.UserCommon;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,15 +35,12 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
         if(user != null){
-            UserCommon common = null;
             //登录:学生
             if(uri.startsWith("/student")){
                 if(roleId != 1){
                     httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/toLogin");
                     return false;
                 }
-                Student student = (Student) user;
-                common = UserCommon.init(student);
             }
             //登录:教师
             if(uri.startsWith("/teacher")){
@@ -55,9 +48,6 @@ public class LoginInterceptor implements HandlerInterceptor {
                     httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/toLogin");
                     return false;
                 }
-
-                Teacher teacher = (Teacher) user;
-                common = UserCommon.init(teacher);
             }
             //登录:管理员
             if(uri.startsWith("/adminManager")){
@@ -65,11 +55,6 @@ public class LoginInterceptor implements HandlerInterceptor {
                     httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/toLogin");
                     return false;
                 }
-                Manager manager = (Manager) user;
-                common = UserCommon.init(manager);
-            }
-            if(common != null){
-                session.setAttribute("userCommon",common);
             }
         }else {
             //未登录

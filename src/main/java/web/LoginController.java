@@ -11,6 +11,7 @@ import service.ManagerService;
 import service.StudentService;
 import service.TeacherService;
 import util.MD5Util;
+import web.manager.UserCommon;
 
 import javax.servlet.http.HttpSession;
 
@@ -70,6 +71,7 @@ public class LoginController {
                 //登录成功，用session记录用户
                 session.setAttribute("user",student);
                 session.setAttribute("role",role);
+                session.setAttribute("userCommon", UserCommon.init(student));
                 result = "ok";
             }else {
                 result = "wrong";
@@ -81,6 +83,7 @@ public class LoginController {
                 //登录成功，用session记录用户
                 session.setAttribute("user",teacher);
                 session.setAttribute("role",role);
+                session.setAttribute("userCommon", UserCommon.init(teacher));
                 result = "ok";
             }else{
                 result = "wrong";
@@ -92,6 +95,7 @@ public class LoginController {
                 //登录成功，用session记录用户
                 session.setAttribute("user",manager);
                 session.setAttribute("role",role);
+                session.setAttribute("userCommon", UserCommon.init(manager));
                 result = "ok";
             }else {
                 result = "wrong";
