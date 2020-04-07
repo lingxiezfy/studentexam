@@ -60,9 +60,14 @@
             <mvc:exclude-mapping path="/tools/**"/>
             <mvc:exclude-mapping path="/upload/work/**"/>
             <mvc:exclude-mapping path="/**/fonts/*"/>
+            <mvc:exclude-mapping path="/**/*.eot"/>
+            <mvc:exclude-mapping path="/**/*.ttf"/>
+            <mvc:exclude-mapping path="/**/*.woff"/>
+            <mvc:exclude-mapping path="/**/*.html"/>
             <mvc:exclude-mapping path="/**/*.css"/>
             <mvc:exclude-mapping path="/**/*.js"/>
             <mvc:exclude-mapping path="/**/*.png"/>
+            <mvc:exclude-mapping path="/**/*.svg"/>
             <mvc:exclude-mapping path="/**/*.gif"/>
             <mvc:exclude-mapping path="/**/*.jpg"/>
             <mvc:exclude-mapping path="/**/*.jpeg"/>

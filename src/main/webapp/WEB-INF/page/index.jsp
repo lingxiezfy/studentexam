@@ -57,6 +57,9 @@
                     class="app-menu__icon fa ${menu.icon }"></i><span class="app-menu__label">${menu.name }</span></a>
             </li>
         </c:forEach>
+        <li><a class="app-menu__item" href="${basePath}community/list"><i
+                class="app-menu__icon fa fa-paper-plane-o"></i><span class="app-menu__label">空中社区</span></a>
+        </li>
     </ul>
 </aside>
 <!-- 页面主体内容 -->
