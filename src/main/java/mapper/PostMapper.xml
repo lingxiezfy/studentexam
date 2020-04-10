@@ -250,4 +250,19 @@
             update_time    = #{updateTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <update id="updateReplyCount" parameterType="entity.Post">
+        update post set
+        <if test="replyCount != null and replyCount != 0">
+            reply_count =
+            <choose>
+                <when test="replyCount > 0">
+                    reply_count + #{replyCount,jdbcType=INTEGER}
+                </when>
+                <otherwise>
+                    reply_count #{replyCount,jdbcType=INTEGER}
+                </otherwise>
+            </choose>
+        </if>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

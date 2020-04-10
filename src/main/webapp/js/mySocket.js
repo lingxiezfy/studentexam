@@ -45,6 +45,17 @@ if (typeof (WebSocket) == "undefined") {
 function registerToServer(groupId,role,userId) {
     sendToServer('group;'+groupId+';in;'+role+';'+userId);
 }
+
+// 向服务器发送群消息
+function sendGroupMessage(groupId,content) {
+    sendToServer('group;'+groupId+';msg; ;'+content);
+}
+
+// 向服务器发送私聊消息
+function sendMessage(role,id,content) {
+    sendToServer('friend;'+role+';'+id+'; ;'+content);
+}
+
 // 向服务器发送群发消息
 function sendToServer(message) {
     if(message){

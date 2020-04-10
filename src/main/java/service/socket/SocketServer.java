@@ -20,6 +20,7 @@ import web.manager.UserCommon;
 import javax.annotation.PostConstruct;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import javax.xml.registry.infomodel.User;
 import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
@@ -64,9 +65,8 @@ public class SocketServer {
     // 组内在线用户 （-1未分班级组；-2 教师；-3 管理员组；1-n 班级组）
     private static ConcurrentHashMap<Integer, CopyOnWriteArraySet<Session>> groupSessionMap = new ConcurrentHashMap<>();
 
-    // 用户消息Session列表
-    // 暂不实现私信，可以不需要该缓存
-    // private static ConcurrentHashMap<UserCommon, CopyOnWriteArraySet<Session>> userSessionMap = new ConcurrentHashMap<>();
+//     用户私信消息Session列表
+     private static ConcurrentHashMap<UserCommon, CopyOnWriteArraySet<Session>> userSessionMap = new ConcurrentHashMap<>();
 
     // session 与用户绑定 （用于快速定位Session指向的用户）
     private static ConcurrentHashMap<Session, UserCommon> sessionUserMap = new ConcurrentHashMap<>();
@@ -119,6 +119,11 @@ public class SocketServer {
     public void onClose(Session session) {
         UserCommon user = sessionUserMap.remove(session);;
         if(user != null){
+            CopyOnWriteArraySet<Session> userSessions = userSessionMap.get(user);
+            if(userSessions != null){
+                userSessions.remove(session);
+            }
+
             int groupId = generateGroupId(user);
             CopyOnWriteArraySet<Session> set = groupSessionMap.get(groupId);
             if(set != null){
@@ -169,17 +174,39 @@ public class SocketServer {
                         int userId = Integer.parseInt(arr[4]);
                         UserCommon user = SocketServer.findUserByRoleAndId(roleId, userId);
                         if (user != null) {
-                            int groupIdReal = generateGroupId(user);
-                            if (groupIdReal == groupId) {
-                                groupSessionMap.computeIfAbsent(groupId, k -> new CopyOnWriteArraySet<>()).add(session);
-                                sessionUserMap.computeIfAbsent(session, k -> user);
-                                log.info("用户{}:{}注册加入组{}", user.getId(), user.getName(), groupId);
+                            // session绑定用户
+                            sessionUserMap.computeIfAbsent(session, k -> user);
+                            // 用户持有的session列表
+                            userSessionMap.computeIfAbsent(user,k->new CopyOnWriteArraySet<>()).add(session);
+
+                            // 用户加入群组（）
+                            if(groupId == 0){
+                                // 传入的组为0时，加入用户角色所属的用户组
+                                groupId = generateGroupId(user);
                             }
+                            groupSessionMap.computeIfAbsent(groupId, k -> new CopyOnWriteArraySet<>()).add(session);
+                            log.info("用户{}:{}注册或加入组{}", user.getId(), user.getName(), groupId);
                         } else {
-                            log.error("用户注册失败，没找到该用户");
+                            systemMessage(session,"非系统用户，禁止使用！",groupId);
                         }
-                    } else {
+                    } else if("msg".equals(arr[2])){ //群消息 group;{groupId};msg;{title};{message content}
+                        UserCommon user = sessionUserMap.get(session);
+                        if(user != null){
+                            sendToGroup(user,groupId,MessageTypeEnum.GroupMessage," ",arr[4],groupId);
+                        }else {
+                            systemMessage(session,"请注册后使用！",groupId);
+                        }
+                    } else{
                         log.warn("未解析消息{}", message);
+                    }
+                }else if("friend".equals(arr[0])){ //friend;{role};{id};{title};{content}
+                    int roleId = Integer.parseInt(arr[1]);
+                    int userId = Integer.parseInt(arr[2]);
+                    UserCommon toUser = SocketServer.findUserByRoleAndId(roleId, userId);
+                    if(toUser != null){
+                        sendToUser(session,toUser,arr[3],arr[4]);
+                    }else {
+                        systemMessage(session,"对方不在线！");
                     }
                 } else {
                     log.warn("未解析消息{}", message);
@@ -224,6 +251,41 @@ public class SocketServer {
             }
         }
     }
+
+    /**
+     * 私聊消息
+     * @param fromSession 用于系统回复消息发送者
+     */
+    public static void sendToUser(Session fromSession, UserCommon toUser, String title, String content) {
+        if(StringUtils.isBlank(content)){
+            systemMessage(fromSession,"禁止发送空消息！");
+        }
+        CopyOnWriteArraySet<Session> toUserSessions = userSessionMap.get(toUser);
+        if(toUserSessions != null && toUserSessions.size() > 0){
+            UserCommon fromUser = sessionUserMap.get(fromSession);
+            String message = JSON.toJSONString(new MessageBase(fromUser, MessageTypeEnum.PrivateMessage,title,content,new Date()));
+            for(Session session : toUserSessions){
+                if(session.isOpen()){
+                    SendMessage(session,message);
+                }
+            }
+        }else {
+            systemMessage(fromSession,"对方不在线！");
+        }
+    }
+
+    // 系统回复：私聊
+    public static void systemMessage(Session session,String message){
+        systemMessage(session,message,0);
+    }
+
+    // 系统回复：群组
+    public static void systemMessage(Session session,String message,Integer groupId){
+        log.warn("系统回复{}", message);
+        MessageBase messageBase = new MessageBase(sessionUserMap.get(session),MessageTypeEnum.SystemMessage,"",message,new Date(),groupId);
+        SendMessage(session,JSON.toJSONString(messageBase));
+    }
+
 
     /**
      * 出现错误

@@ -31,13 +31,13 @@
           </c:if>
           
           <div class="fly-admin-box" data-id="${post.id}">
-            <!-- 可管理 或者是自己的文章 -->
+            <!-- 管理员查看 或者是自己的文章 -->
             <c:if test="${post.userRole == 3 || (userCommon.role == post.userRole && userCommon.id == post.userId)}">
               <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
             </c:if>
             <c:if test="${userCommon.role == 3}">
               <c:choose>
-                <c:when test="post.topFlag == 1">
+                <c:when test="${post.topFlag == 1}">
                   <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span>
                 </c:when>
                 <c:otherwise>
@@ -84,7 +84,7 @@
           </div>
         </div>
         <div class="detail-body photos">
-          <p>${post.content}</p>
+          ${post.content}
         </div>
         <div id="replyBegin"></div>
       </div>
@@ -188,7 +188,7 @@
   </div>
 </div>
 
-<jsp:include page="../common/footer.jsp" />
+<jsp:include page="/community/buildFooter" />
 
 <script>
 layui.use(['fly', 'face','laypage','jie'], function(){
@@ -220,7 +220,6 @@ layui.use(['fly', 'face','laypage','jie'], function(){
       location.reload();
     });
   }
-
 
 });
 </script>

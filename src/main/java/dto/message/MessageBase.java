@@ -20,6 +20,8 @@ public class MessageBase {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date sendTime;
 
+    private long sendMills = System.currentTimeMillis();
+
     private Integer messageId;
     public MessageBase() {
     }

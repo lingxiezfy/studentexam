@@ -54,7 +54,7 @@
   </div>
 </div>
 
-<jsp:include page="../common/footer.jsp" />
+<jsp:include page="/community/buildFooter" />
 
 <script type="text/javascript">
   layui.use(['laypage','jquery'], function(){

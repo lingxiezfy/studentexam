@@ -12,6 +12,9 @@ public enum MessageTypeEnum {
     Default(0,"未定义消息")
     , SystemNotice(1,"系统公告")
     , ClassNotice(2,"班级通知")
+    , GroupMessage(3,"群消息")
+    , SystemMessage(4,"系统消息")
+    , PrivateMessage(5,"私聊消息")
     ;
 
     private int code;

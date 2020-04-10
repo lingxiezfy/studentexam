@@ -97,7 +97,6 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function 
         , layEditor: function (options) {
             var html = ['<div class="layui-unselect fly-edit">'
                 , '<span type="face" title="插入表情"><i class="iconfont icon-yxj-expression" style="top: 1px;"></i></span>'
-                , '<span type="picture" title="插入图片：img[src]"><i class="iconfont icon-tupian"></i></span>'
                 , '<span type="href" title="超链接格式：a(href)[text]"><i class="iconfont icon-lianjie"></i></span>'
                 , '<span type="code" title="插入代码或引用"><i class="iconfont icon-emwdaima" style="top: 1px;"></i></span>'
                 , '<span type="hr" title="插入水平线">hr</span>'
@@ -188,7 +187,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function 
                         ]
                     }, function (val, index, elem) {
                         if (!/^http(s*):\/\/[\S]/.test(val)) {
-                            layer.tips('这根本不是个链接，不要骗我。', elem, {tips: 1})
+                            layer.tips('这根本不是个链接，不要骗我。', elem, {tips: 1});
                             return;
                         }
                         layui.focusInsert(editor[0], ' a(' + val + ')[' + val + '] ');
@@ -318,15 +317,14 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function 
         , '<span>可获得<cite>{{ d.experience }}</cite>飞吻</span>'
         , '{{# } }}'].join('')
         , tplSigninDay = '已连续签到<cite>{{ d.days }}</cite>天'
-
         , signRender = function (data) {
-        laytpl(tplSignin).render(data, function (html) {
-            elemSigninMain.html(html);
-        });
-        laytpl(tplSigninDay).render(data, function (html) {
-            elemSigninDays.html(html);
-        });
-    }
+            laytpl(tplSignin).render(data, function (html) {
+                elemSigninMain.html(html);
+            });
+            laytpl(tplSigninDay).render(data, function (html) {
+                elemSigninDays.html(html);
+            });
+        }
 
         , elemSigninHelp = $('#LAY_signinHelp')
         , elemSigninTop = $('#LAY_signinTop')
@@ -536,17 +534,16 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function 
     });
 
     //点击@
-    $('body').on('click', '.fly-aite', function () {
-        var othis = $(this), text = othis.text();
-        if (othis.attr('href') !== 'javascript:;') {
-            return;
-        }
-        text = text.replace(/^@|（[\s\S]+?）/g, '');
-        othis.attr({
-            href: '/jump?username=' + text
-            , target: '_blank'
-        });
-    });
+    // $('body').on('click', '.fly-aite', function () {
+    //     var othis = $(this), text = othis.text();
+    //     if (othis.attr('href') !== 'javascript:;') {
+    //         return;
+    //     }
+    //     text = text.replace(/^@|（[\s\S]+?）/g, '');
+    //     othis.attr({
+    //         href: '/jump?username=' + text
+    //     });
+    // });
 
     //表单提交
     form.on('submit(json)', function (data) {
@@ -568,7 +565,6 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function 
                         end: end
                     }) : end();
                 }
-                ;
             }
         );
         return false;
