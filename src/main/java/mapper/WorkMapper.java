@@ -9,15 +9,11 @@ import java.util.Map;
 public interface WorkMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Work record);
-
     int insertSelective(Work record);
 
     Work selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Work record);
-
-    int updateByPrimaryKey(Work record);
     //根据作业名称查询
     Work selectByTitle(String title);
     //根据名称查询所有试题信息

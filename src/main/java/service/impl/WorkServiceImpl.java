@@ -1,7 +1,9 @@
 package service.impl;
 
 import entity.*;
+import ex.dao.IEx;
 import mapper.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.WorkService;
@@ -21,6 +23,10 @@ public class WorkServiceImpl implements WorkService {
     private final int UNRUNNING = 2; //未运行
     private final int RUNNING = 3; //正在运行
 
+
+    @Autowired
+    private IEx ex;
+
     /*
     *添加试卷
     * */
@@ -33,10 +39,18 @@ public class WorkServiceImpl implements WorkService {
             result = "exist";
         }else {
             //添加
+            if(work.getExFlag() == 1 && StringUtils.isNotBlank(work.getExInitSql())){
+                try{
+                    ex.exc(work.getExInitSql());
+                }catch (Exception e){
+                    return e.getMessage();
+                }
+            }
             work.setDelFlag(ADD);
             Teacher teacher = (Teacher)session.getAttribute("user");
             work.setFkTeacher(teacher.getId());
             work.setFkStatus(UNINIT);
+
             workMapper.insertSelective(work);
             result = "ok";
         }

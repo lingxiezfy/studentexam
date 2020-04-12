@@ -33,6 +33,21 @@
                    <input class="form-control" type="number" id="timeLimit" name="timeLimit" placeholder="请输入课堂练习时长">
                  </div>
                </div>
+                 <div class="form-group row">
+                     <label class="control-label col-md-3"></label>
+                     <div class="checkbox col-md-8">
+                         <label for="exFlag">
+                             <input type="checkbox" id="exFlag" name="exFlag">
+                             数据实验
+                         </label>
+                     </div>
+                 </div>
+                 <div id="exInitInput" class="form-group row">
+                     <label class="control-label col-md-3" for="exInitSql"><span style="color:red;"></span>初始化SQL</label>
+                     <div class="col-md-8">
+                         <textarea class="form-control"  id="exInitSql" name="exInitSql" placeholder="如需初始化数据请输入sql" style="height: 100px;"></textarea>
+                     </div>
+                 </div>
              </form>
            </div>
          </div>
@@ -46,7 +61,7 @@
     <script type="text/javascript" src="${basePath }js/main.js"></script>
     <script type="text/javascript">
     $(function() {
-    	
+        $("#exInitInput").hide();
       $("#myform").validate({
     	  //验证规则
           rules: {
@@ -93,7 +108,14 @@
         		  }
         	  });
           }
-      })
+      });
+        $("#exFlag").change(function () {
+            if(this.checked){
+                $("#exInitInput").show();
+            }else {
+                $("#exInitInput").hide();
+            }
+        })
   })
   	
   	/* 提交表单 */

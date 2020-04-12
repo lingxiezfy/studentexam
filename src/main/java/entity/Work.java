@@ -18,6 +18,25 @@ public class Work {
     private Integer fkTeacher;
 
     private Byte delFlag;
+    private Integer exFlag;
+
+    private String exInitSql;
+
+    public Integer getExFlag() {
+        return exFlag;
+    }
+
+    public void setExFlag(Integer exFlag) {
+        this.exFlag = exFlag;
+    }
+
+    public String getExInitSql() {
+        return exInitSql;
+    }
+
+    public void setExInitSql(String exInitSql) {
+        this.exInitSql = exInitSql;
+    }
 
     public Integer getId() {
         return id;
