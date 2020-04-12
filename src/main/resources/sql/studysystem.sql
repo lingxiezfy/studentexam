@@ -649,4 +649,47 @@ CREATE TABLE `message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '消息流水表';
 
 
+-- ----------------------------
+-- Table structure for post 帖子
+-- ----------------------------
+DROP TABLE IF EXISTS `post`;
+create table post(
+    id int auto_increment comment '帖子主键'
+        primary key,
+    title varchar(200) default '' not null comment '贴子标题',
+    topic_id int default 0 not null comment '话题id',
+    user_id int default 0 not null comment '用户id',
+    user_role int default 0 not null comment '用户角色（1:学生，2:老师，3:管理员）',
+    user_name varchar(100) default '' not null comment '用户名',
+    content text not null comment '贴子内容',
+    reply_count int default 0 not null comment '回复数',
+    excellent_flag int default 0 not null comment '精华标记',
+    top_flag int default 0 not null comment '置顶标记',
+    delete_flag int default 0 not null comment '删除标记',
+    create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    update_time datetime default CURRENT_TIMESTAMP not null comment '更新时间'
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment '帖子';
+
+-- ----------------------------
+-- Table structure for post 回复
+-- ----------------------------
+DROP TABLE IF EXISTS `reply`;
+
+create table reply(
+    id int auto_increment comment '回复注解'
+        primary key,
+    user_role int default 0 not null comment '用户角色',
+    user_id int default 0 not null comment '用户id',
+    user_name varchar(100) default '' not null comment '用户名',
+    post_id int default 0 not null comment '帖子Id',
+    content text not null comment '回复内容',
+    parent_id int default 0 not null comment '上一级回复id',
+    reply_count int default 0 not null comment '回复数量',
+    delete_flag int default 0 not null comment '删除标记',
+    create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    update_time datetime default CURRENT_TIMESTAMP not null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment '回复';
+
+
+
 SET FOREIGN_KEY_CHECKS = 1;
