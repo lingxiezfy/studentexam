@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="${basePath }css/main.css">
     <link rel="stylesheet" type="text/css" href="${basePath }css/layer-skin.css">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="${basePath}css/font-awesome.min.css">
   </head>
   <body class="app sidebar-mini rtl">
     <main class="app-content">
@@ -91,7 +91,7 @@
     <script type="text/javascript" src="${basePath }js/select2.js"></script>
     <script type="text/javascript">
     	$(function(){
-    		qtypeSelect("qtype");
+    		qtypeSelect("qtype",'${basePath}');
     	})
 
     	function del(sid){

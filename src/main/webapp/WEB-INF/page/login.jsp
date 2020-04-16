@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="${basePath }css/main.css">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="${basePath }css/font-awesome.min.css">
     <!-- 书签图标 -->
     <link rel="BOOKMARK" href="${basePath }images/icon.png">
     <title>"我的课堂"学习交流平台登录</title>

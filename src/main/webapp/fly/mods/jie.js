@@ -49,7 +49,7 @@ layui.define('fly', function (exports) {
     gather.jieAdmin = {
         //删贴子
         del: function (div) {
-            layer.confirm('确认删除该求解么？', function (index) {
+            layer.confirm('确认删除该帖子么？', function (index) {
                 layer.close(index);
                 fly.json(hostPath + '/community/post/del/' + div.data('id'), {}, function (res) {
                     if (res.success) {

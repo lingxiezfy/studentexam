@@ -291,25 +291,25 @@ CREATE TABLE `menu`  (
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES (1, '主页', 'adminManager/toIndex', 'fa-home', NULL, NULL, 1, 1, 0);
-INSERT INTO `menu` VALUES (2, '年级管理', 'adminManager/grade', 'fa-building', NULL, NULL, 1, 2, 0);
-INSERT INTO `menu` VALUES (3, '专业管理', 'adminManager/major', 'fa-graduation-cap', NULL, NULL, 1, 3, 0);
-INSERT INTO `menu` VALUES (4, '班级管理', 'adminManager/clazz', 'fa-cube', NULL, NULL, 1, 4, 0);
-INSERT INTO `menu` VALUES (5, '学生管理', 'adminManager/stuList', 'fa-users', NULL, NULL, 1, 5, 0);
-INSERT INTO `menu` VALUES (6, '教师管理', 'adminManager/teaList', 'fa-user', NULL, NULL, 1, 6, 0);
-INSERT INTO `menu` VALUES (7, '试卷管理', 'teacher/examPaper', 'fa-file-text-o', NULL, NULL, 1, 7, 0);
-INSERT INTO `menu` VALUES (8, '单选题', 'teacher/single', 'fa-check-square-o', NULL, NULL, 1, 8, 0);
-INSERT INTO `menu` VALUES (9, '多选题', 'teacher/multi', 'fa-bolt ', NULL, NULL, 1, 9, 0);
-INSERT INTO `menu` VALUES (10, '判断题', 'teacher/judge', 'fa-gavel', NULL, NULL, 1, 10, 0);
-INSERT INTO `menu` VALUES (11, '参加考试', 'student/examList', 'fa-pencil-square-o ', NULL, NULL, 1, 11, 0);
-INSERT INTO `menu` VALUES (12, '考试记录', 'student/examHistory', 'fa-file-word-o', NULL, NULL, 1, 12, 0);
-INSERT INTO `menu` VALUES (13, '教师主页', 'teacher/toIndex', 'fa-home', NULL, NULL, 1, 13, 0);
-INSERT INTO `menu` VALUES (14, '学生主页', 'student/toIndex', 'fa-home', NULL, NULL, 1, 14, 0);
-INSERT INTO `menu` VALUES (15, '课堂随练', 'teacher/workPaper', 'fa-grav ', NULL, NULL, 1, 15, 0);
-INSERT INTO `menu` VALUES (16, '作业提交', 'student/workSubmit', 'fa-keyboard-o', NULL, NULL, 1, 16, 0);
-INSERT INTO `menu` VALUES (17, '作业统计', 'teacher/workCount', 'fa-keyboard-o', NULL, NULL, 1, 17, 0);
-INSERT INTO `menu` VALUES (18, '课堂资源', 'teacher/uploadResource', 'fa-keyboard-o', NULL, NULL, 1, 18, 0);
-INSERT INTO `menu` VALUES (19, '下载资源', 'student/downloadResource', 'fa-keyboard-o', NULL, NULL, 1, 19, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (1, '主页', 'adminManager/toIndex', 'fa-home', null, null, 1, 1, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (2, '年级管理', 'adminManager/grade', 'fa-building', null, null, 1, 2, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (3, '专业管理', 'adminManager/major', 'fa-graduation-cap', null, null, 1, 3, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (4, '班级管理', 'adminManager/clazz', 'fa-cube', null, null, 1, 4, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (5, '学生管理', 'adminManager/stuList', 'fa-users', null, null, 1, 5, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (6, '教师管理', 'adminManager/teaList', 'fa-user', null, null, 1, 6, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (7, '试卷管理', 'teacher/examPaper', 'fa-file-text-o', null, null, 1, 7, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (8, '单选题', 'teacher/single', 'fa-check-square-o', null, null, 1, 8, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (9, '多选题', 'teacher/multi', 'fa-bolt ', null, null, 1, 9, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (10, '判断题', 'teacher/judge', 'fa-gavel', null, null, 1, 10, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (11, '参加考试', 'student/examList', 'fa-pencil-square-o ', null, null, 1, 11, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (12, '考试记录', 'student/examHistory', 'fa-file-word-o', null, null, 1, 12, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (13, '教师主页', 'teacher/toIndex', 'fa-home', null, null, 1, 13, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (14, '学生主页', 'student/toIndex', 'fa-home', null, null, 1, 14, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (15, '课堂随练', 'teacher/workPaper', 'fa-grav ', null, null, 1, 15, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (16, '作业提交', 'student/workList', 'fa-keyboard-o', null, null, 1, 16, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (17, '作业统计', 'teacher/workCount', 'fa-keyboard-o', null, null, 1, 17, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (18, '课堂资源', 'teacher/classResource', 'fa-keyboard-o', null, null, 1, 18, 0);
+INSERT INTO menu (id, name, url, icon, pid, topid, menu_level, sort, hidden) VALUES (19, '下载资源', 'student/toDownloadPage', 'fa-keyboard-o', null, null, 1, 19, 0);
 
 -- ----------------------------
 -- Table structure for question_judge
@@ -436,20 +436,22 @@ CREATE TABLE `role_menu`  (
 -- ----------------------------
 -- Records of role_menu
 -- ----------------------------
-INSERT INTO `role_menu` VALUES (1, 1, 11);
-INSERT INTO `role_menu` VALUES (2, 1, 12);
-INSERT INTO `role_menu` VALUES (3, 2, 7);
-INSERT INTO `role_menu` VALUES (4, 2, 8);
-INSERT INTO `role_menu` VALUES (5, 2, 9);
-INSERT INTO `role_menu` VALUES (6, 2, 10);
-INSERT INTO `role_menu` VALUES (7, 3, 1);
-INSERT INTO `role_menu` VALUES (8, 3, 2);
-INSERT INTO `role_menu` VALUES (9, 3, 3);
-INSERT INTO `role_menu` VALUES (10, 3, 4);
-INSERT INTO `role_menu` VALUES (11, 3, 5);
-INSERT INTO `role_menu` VALUES (12, 3, 6);
-INSERT INTO `role_menu` VALUES (13, 2, 15);
-INSERT INTO `role_menu` VALUES (14, 1, 16);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (1, 1, 11);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (2, 1, 12);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (3, 2, 7);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (4, 2, 8);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (5, 2, 9);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (6, 2, 10);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (7, 3, 1);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (8, 3, 2);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (9, 3, 3);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (10, 3, 4);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (11, 3, 5);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (12, 3, 6);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (13, 2, 15);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (14, 1, 16);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (15, 2, 18);
+INSERT INTO role_menu (id, role_id, menu_id) VALUES (16, 1, 19);
 
 -- ----------------------------
 -- Table structure for student
@@ -647,6 +649,49 @@ CREATE TABLE `message` (
                            update_time datetime default CURRENT_TIMESTAMP not null comment '更新时间',
                            PRIMARY KEY (`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '消息流水表';
+
+
+-- ----------------------------
+-- Table structure for post 帖子
+-- ----------------------------
+DROP TABLE IF EXISTS `post`;
+create table post(
+    id int auto_increment comment '帖子主键'
+        primary key,
+    title varchar(200) default '' not null comment '贴子标题',
+    topic_id int default 0 not null comment '话题id',
+    user_id int default 0 not null comment '用户id',
+    user_role int default 0 not null comment '用户角色（1:学生，2:老师，3:管理员）',
+    user_name varchar(100) default '' not null comment '用户名',
+    content text not null comment '贴子内容',
+    reply_count int default 0 not null comment '回复数',
+    excellent_flag int default 0 not null comment '精华标记',
+    top_flag int default 0 not null comment '置顶标记',
+    delete_flag int default 0 not null comment '删除标记',
+    create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    update_time datetime default CURRENT_TIMESTAMP not null comment '更新时间'
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment '帖子';
+
+-- ----------------------------
+-- Table structure for post 回复
+-- ----------------------------
+DROP TABLE IF EXISTS `reply`;
+
+create table reply(
+    id int auto_increment comment '回复注解'
+        primary key,
+    user_role int default 0 not null comment '用户角色',
+    user_id int default 0 not null comment '用户id',
+    user_name varchar(100) default '' not null comment '用户名',
+    post_id int default 0 not null comment '帖子Id',
+    content text not null comment '回复内容',
+    parent_id int default 0 not null comment '上一级回复id',
+    reply_count int default 0 not null comment '回复数量',
+    delete_flag int default 0 not null comment '删除标记',
+    create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    update_time datetime default CURRENT_TIMESTAMP not null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment '回复';
+
 
 
 SET FOREIGN_KEY_CHECKS = 1;
