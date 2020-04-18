@@ -1,14 +1,17 @@
 package service.impl;
 
 import entity.*;
-import ex.dao.IEx;
+import ex.dao.IExDao;
 import mapper.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.WorkService;
+import service.ex.ExService;
 
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 @Service
@@ -25,7 +28,7 @@ public class WorkServiceImpl implements WorkService {
 
 
     @Autowired
-    private IEx ex;
+    private IExDao exDao;
 
     /*
     *添加试卷
@@ -39,12 +42,14 @@ public class WorkServiceImpl implements WorkService {
             result = "exist";
         }else {
             //添加
-            if(work.getExFlag() == 1 && StringUtils.isNotBlank(work.getExInitSql())){
+            if(work.getExFlag() != null && work.getExFlag() == 1 && StringUtils.isNotBlank(work.getExInitSql())){
                 try{
-                    ex.exc(work.getExInitSql());
+                    exDao.exc(work.getExInitSql());
                 }catch (Exception e){
                     return e.getMessage();
                 }
+            }else {
+                work.setExInitSql(null);
             }
             work.setDelFlag(ADD);
             Teacher teacher = (Teacher)session.getAttribute("user");
@@ -70,6 +75,10 @@ public class WorkServiceImpl implements WorkService {
     public Work getWorkId(Integer eid) {
         return workMapper.selectByPrimaryKey(eid);
     }
+
+    @Autowired
+    ExService exService;
+
     /*
      *编辑试卷信息
      * */
@@ -81,6 +90,16 @@ public class WorkServiceImpl implements WorkService {
         if(hasWork != null){
             result =  "exist";
         }else {
+            if(work.getExFlag() != null && work.getExFlag() == 1 && StringUtils.isNotBlank(work.getExInitSql())){
+                try{
+//                    exService.runScript(new InputStreamReader(new ByteArrayInputStream(work.getExInitSql().getBytes())));
+                    exDao.exc(work.getExInitSql());
+                }catch (Exception e){
+                    return e.getMessage();
+                }
+            }else {
+                work.setExInitSql(null);
+            }
             //获取当前登录用户
             Teacher teacher = (Teacher)session.getAttribute("user");
             work.setFkTeacher(teacher.getId());

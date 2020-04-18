@@ -96,10 +96,10 @@
                                 <i class="layui-icon">&#xe67c;</i>
                                 <c:choose>
                                     <c:when test="${submit == null}">
-                                        选择文件
+                                        选择文件<c:if test="${work.exFlag == 1}">(本题仅支持SQL文件)</c:if>
                                     </c:when>
                                     <c:otherwise>
-                                        重新提交
+                                        重新提交<c:if test="${work.exFlag == 1}">(本题仅支持SQL文件)</c:if>
                                     </c:otherwise>
                                 </c:choose>
                             </button>
@@ -129,15 +129,22 @@
         var uploadInst = upload.render({
             elem: '#workUpload' //绑定元素
             ,url: '${basePath }student/workUpload?workId=${work.id}' //上传接口
+            <c:if test="${work.exFlag == 1}">
+            ,exts:'sql'
+            </c:if>
             ,accept:"file"
             ,done: function(res){
                 //上传完毕回调
-                layer.alert("上传成功",function(){
-                    window.location.reload();
-                });
+                if(res){
+                    layer.alert("上传成功",function(){
+                        window.location.reload();
+                    });
+                }else {
+                    layer.error("上传失败,请重试！");
+                }
             }
             ,error: function(){
-                layer.error("上传失败,请重试！");
+                layer.error("请求服务器失败,请重试！");
                 //请求异常回调
             }
         });

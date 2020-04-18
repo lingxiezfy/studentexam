@@ -61,11 +61,11 @@
                         <td><textarea>${work.content}</textarea></td>
 	                  <td>
 	                  	<c:choose>
-	                  		<c:when test="${work.fkStatus eq 3 }">
-	                  			<button class="btn btn-info" type="button" style="height:30px;line-height:10px;" disabled="disabled">显示</button>
+	                  		<c:when test="${work.fkStatus eq 4 }">
+	                  			<button class="btn btn-info" type="button" style="height:30px;line-height:10px;" disabled="disabled">配置</button>
 	                  		</c:when>
 	                  		<c:otherwise>
-	                  			<button class="btn btn-info" type="button" style="height:30px;line-height:10px;" onclick="showClazz('${work.id}')">显示</button>
+	                  			<button class="btn btn-info" type="button" style="height:30px;line-height:10px;" onclick="showClazz('${work.id}')">配置</button>
 	                  		</c:otherwise>
 	                  	</c:choose>
 	                  	
@@ -96,7 +96,8 @@
 	                  			<button class="btn btn-success" type="button" style="height:30px;line-height:10px;" onclick="toWorkRunning('${work.id}')">开始运行</button>
 	                  		</c:when>
 	                  		<c:when test="${work.fkStatus eq 3}">
-	                  			<button class="btn btn-danger" type="button" style="height:30px;line-height:10px;" onclick="toWorkStop('${work.id}')">立即停止</button>
+	                  			<button class="btn btn-danger btn-sm" type="button" style="height:30px;line-height:10px;" onclick="toWorkStop('${work.id}')">立即停止</button>
+                                <button class="btn btn-warning btn-sm" type="button" style="height:30px;line-height:10px;" onclick="toReview('${work.id}')">查看提交</button>
 	                  		</c:when>
                             <c:when test="${work.fkStatus eq 4}">
                                 <button class="btn btn-warning" type="button" style="height:30px;line-height:10px;" onclick="toReview('${work.id}')">作业批改</button>
@@ -104,15 +105,15 @@
 	                  	</c:choose>
 	                  </td>
 	                  <td>
-	                  	<c:if test="${work.fkStatus eq 3}">
-	                  		<button class="btn btn-info" type="button" style="height:30px;line-height:10px;" disabled="disabled">编辑</button>
-	                  		<button class="btn btn-danger" type="button" style="height:30px;line-height:10px;" disabled="disabled">删除</button>
-	                  	</c:if>
-	                  	<c:if test="${work.fkStatus ne 3}">
-	                  		<button class="btn btn-info" type="button" style="height:30px;line-height:10px;" onclick="edit('${work.id}')">编辑</button>
-	                  		<button class="btn btn-danger" type="button" style="height:30px;line-height:10px;" onclick="del('${work.id}')">删除</button>
-	                  	</c:if>
-	                  	
+                          <button class="btn btn-info" type="button" style="height:30px;line-height:10px;" onclick="edit('${work.id}')">编辑</button>
+                          <c:choose>
+                              <c:when test="${work.fkStatus <= 2}">
+                                  <button class="btn btn-danger" type="button" style="height:30px;line-height:10px;" onclick="del('${work.id}')">删除</button>
+                              </c:when>
+                              <c:otherwise>
+                                  <button class="btn btn-danger" type="button" style="height:30px;line-height:10px;" disabled="disabled">删除</button>
+                              </c:otherwise>
+                          </c:choose>
 	                  </td>
 	                </tr>
               	</c:forEach>

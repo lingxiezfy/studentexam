@@ -27,21 +27,22 @@
 </body>
 
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-form">
+    <div class="layui-form" lay-filter="selectForm">
         <div class="layui-form-item">
             <div class="layui-input-inline">
                 <select id="clazz" name="clazz" lay-verify="required" lay-filter="clazzSelect">
-                    <option value="">==筛选班级==</option>
+                    <option value="0">筛选班级</option>
                     <c:forEach items="${clazzList}" var="clazz">
                         <option value="${clazz.id}">${clazz.cno}班</option>
                     </c:forEach>
                 </select>
             </div>
-            <div class="layui-input-block">
+
+            <span>
                 共 <strong class="workTotal">0</strong>份
                 ，已提交 <strong class="workHasSubmit" style="color: red;">0</strong>份
                 ，还剩<strong class="workWaitSubmit" style="color: red;">0</strong> 份待交
-            </div>
+            </span>
         </div>
     </div>
 </script>
@@ -52,6 +53,7 @@
         var table = layui.table;
         var form = layui.form;
         var $ = layui.jquery;
+        var classId = 0;
         var listTable = table.render({
             elem: '#workSubmitInfo'
             , height: "300"
@@ -73,15 +75,25 @@
                 , {field: 'workPoint', title: '得分', sort: true}
             ]]
             ,parseData: function(res){ //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                    ,"hasSubmit":res.hasSubmit
+                    ,"waitSubmit":res.waitSubmit
+                    ,"classId":res.classId
+                };
+            }
+            , done:function(res){
                 $(".workTotal").html(res.count);
                 $(".workHasSubmit").html(res.hasSubmit);
                 $(".workWaitSubmit").html(res.waitSubmit);
-                return {
-                    "code": res.code, //解析接口状态
-                    "msg": res.msg, //解析提示文本
-                    "count": res.count, //解析数据长度
-                    "data": res.data //解析数据列表
-                };
+                if(res.classId){
+                    form.val("selectForm", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                        "clazz": res.classId // "name": "value"
+                    });
+                }
             }
 
         });

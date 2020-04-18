@@ -34,6 +34,30 @@
                    <input class="form-control" type="number" id="timeLimit" name="timeLimit" value="${work.timeLimit }" placeholder="请输入课堂练习时长">
                  </div>
                </div>
+               <div class="form-group row">
+                 <label class="control-label col-md-3"></label>
+                 <div class="checkbox col-md-8">
+                   <label for="exFlag">
+                     <input type="checkbox" value="1" id="exFlag" name="exFlag" <c:if test="${work.exFlag == 1}">checked</c:if> >
+                     数据实验
+                   </label>
+                 </div>
+               </div>
+               <div id="exInitInput" class="form-group row">
+                 <label class="control-label col-md-3" for="exInitSql"><span style="color:red;"></span>初始化SQL</label>
+                 <div class="col-md-8">
+                   <c:choose>
+                     <c:when test="${work.exInitSql == null || work.exInitSql.length() <= 0}">
+                       <textarea class="form-control"  id="exInitSql" name="exInitSql" placeholder="如需初始化数据请输入sql" style="height: 100px;" ></textarea>
+                     </c:when>
+                     <c:otherwise>
+                       <textarea class="form-control"  id="exInitSql" name="exInitSql" placeholder="如需初始化数据请输入sql" style="height: 100px;">
+                           ${work.exInitSql}
+                       </textarea>
+                     </c:otherwise>
+                   </c:choose>
+                 </div>
+               </div>
              </form>
            </div>
          </div>
@@ -48,7 +72,10 @@
 
     <script type="text/javascript">
     $(function() {
-    	
+      <c:if test="${work.exFlag != 1}">
+        $("#exInitInput").hide();
+      </c:if>
+
       $("#myform").validate({
     	  //验证规则
           rules: {
@@ -83,19 +110,28 @@
         		  type:'post',
         		  url:'${basePath}teacher/updateWorkPaper',
         		  success:function(data){	//请求成功回调函数
-        			  if(data == 'ok'){
+        			  if(data === 'ok'){
         				  parent.layer.alert("修改成功",function(){
         					  window.parent.location.reload();
         				  });
-        			  }else if(data=='exist'){
+        			  }else if(data==='exist'){
         				  parent.layer.alert("该作业已存在");
         			  }else{
-        				  parent.layer.alert("修改失败");
+        				  parent.layer.alert(data,{icon:5});
         			  }
         		  }
         	  });
           }
+      });
+
+      $("#exFlag").change(function () {
+        if(this.checked){
+          $("#exInitInput").show();
+        }else {
+          $("#exInitInput").hide();
+        }
       })
+
   })
   	
   	/* 提交表单 */

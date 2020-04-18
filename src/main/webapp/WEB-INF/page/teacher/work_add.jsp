@@ -37,7 +37,7 @@
                      <label class="control-label col-md-3"></label>
                      <div class="checkbox col-md-8">
                          <label for="exFlag">
-                             <input type="checkbox" id="exFlag" name="exFlag">
+                             <input type="checkbox" value="1" id="exFlag" name="exFlag">
                              数据实验
                          </label>
                      </div>
@@ -96,14 +96,14 @@
         		  type:'post',
         		  url:'${basePath}teacher/saveWorkPaper',
         		  success:function(data){	//请求成功回调函数
-        			  if(data == 'ok'){
+        			  if(data === 'ok'){
         				  parent.layer.alert("添加成功",function(){
         					  window.parent.location.reload();
         				  });
-        			  }else if(data=='exist'){
-        				  parent.layer.alert("该作业已存在");
+        			  }else if(data==='exist'){
+        				  parent.layer.alert("该作业名称已存在");
         			  }else{
-        				  parent.layer.alert("添加失败");
+        				  parent.layer.alert(data,{icon:5});
         			  }
         		  }
         	  });

@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import entity.*;
-import mapper.StudentMapper;
-import mapper.WorkClazzMapper;
-import mapper.WorkCorrectingMapper;
-import mapper.WorkSubmitMapper;
+import ex.dao.IExDao;
+import mapper.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -19,9 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import service.ClazzService;
 import service.WorkClazzService;
 import service.WorkService;
+import service.ex.ExService;
 import util.ParamUtil;
 
 import javax.servlet.http.HttpSession;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -306,10 +310,73 @@ public class WorkPaperController {
         response.put("data",list);
         response.put("code",0);
         response.put("count",list.size());
+        response.put("workId",workId == null ? 0:workId);
+        response.put("classId",classId == null ? 0: classId);
+
         long waitSubmit = list.stream().filter(o->o.get("submitId").equals(0) || o.get("submitFile") == null).count();
         response.put("waitSubmit",waitSubmit);
         response.put("hasSubmit",list.size()-waitSubmit);
         response.put("message","请求成功");
+        return response;
+    }
+
+    @Autowired
+    WorkMapper workMapper;
+
+
+    /**
+     * 执行学生提交的Sql文件
+     */
+    @RequestMapping("/runWorkSql")
+    @ResponseBody
+    public Map<String,Object> runWorkSql(HttpSession session,Integer workId,Integer submitId){
+        Map<String,Object> response = new HashMap<>();
+        response.put("success",false);
+        Work work = workMapper.selectByPrimaryKey(workId);
+        if(work == null || work.getExFlag() != 1){
+            response.put("msg","练习不存在或者不支持在线运行");
+            return response;
+        }
+        WorkSubmit submit = workSubmitMapper.selectByPrimaryKey(submitId);
+        if(submit == null || !submit.getFkWork().equals(workId) || StringUtils.isEmpty(submit.getFileUrl())){
+            response.put("msg","未找到学生的提交文件！");
+            return response;
+        }
+        String filePath = session.getServletContext().getRealPath("") + "upload"+submit.getFileUrl();
+        return runWorkSubmit(work.getExInitSql(),filePath);
+    }
+
+    @Autowired
+    ExService exService;
+    @Autowired
+    IExDao exDao;
+
+    //原子操作
+    private synchronized Map<String,Object> runWorkSubmit(String initSql,String submitFile){
+        Map<String,Object> response = new HashMap<>();
+        response.put("success",false);
+        // 执行初始化sql
+        if(StringUtils.isNotBlank(initSql)){
+            try{
+                exDao.exc(initSql);
+            }catch (Exception e){
+                response.put("msg","初始化执行失败！");
+                response.put("exception",e.getMessage());
+                return response;
+            }
+        }
+        // 执行提交文件
+        try{
+            List<Map> resultList = exService.runScript(new InputStreamReader(new FileInputStream(submitFile)));
+            response.put("success",true);
+            response.put("msg","执行完成");
+            response.put("resultList",resultList);
+        }catch (IOException ioe){
+            response.put("msg","提交文件有误，请检查提交！");
+        }catch (Exception e){
+            response.put("msg","执行过程发送错误！终止执行！");
+            response.put("exception",e.getMessage());
+        }
         return response;
     }
 

@@ -38,12 +38,14 @@
                   </select>
                 </div>
                 <div class="form-group col-md-3 align-self-end">
-                  <button class="btn btn-primary" type="button"
-                          <c:choose>
-                              <c:when test="${work.fkStatus == 3 || work.fkStatus == 4}"> disabled </c:when>
-                              <c:otherwise>onclick="clazzAdd()"</c:otherwise>
-                          </c:choose>
-                  ><i class="fa fa-fw fa-lg fa-plus-circle"></i>添加</button>
+                    <c:choose>
+                        <c:when test="${work.fkStatus == 4}">
+                            <button class="btn btn-primary" type="button" disabled ><i class="fa fa-fw fa-lg fa-plus-circle"></i>此状态不可修改班级</button>
+                        </c:when>
+                        <c:otherwise>
+                            <button class="btn btn-primary" type="button" onclick="clazzAdd()" ><i class="fa fa-fw fa-lg fa-plus-circle"></i>添加</button>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
               </form>
             </div>
@@ -68,7 +70,7 @@
                       <td>
                         <button class="btn btn-info" type="button" style="height:30px;line-height:10px;"
                                 <c:choose>
-                                    <c:when test="${work.fkStatus == 3 || work.fkStatus == 4}"> disabled </c:when>
+                                    <c:when test="${work.fkStatus == 4}"> disabled </c:when>
                                     <c:otherwise>onclick="del('${tc.id}')"</c:otherwise>
                                 </c:choose>
                         >删除</button>
@@ -121,12 +123,11 @@
     	//添加班级
     	function clazzAdd(){
     		var cid = $("#fkClazz").val();
-    		var eid = '${eid}';
     		if(cid!=null && cid!='' && cid!= undefined){
     			$.ajax({
     	    		type:"post",
     	    		url:"${basePath}teacher/workClazzSelect",
-    	    		data:{"fkWork":eid,"fkClazz":cid},
+    	    		data:{"fkWork":${work.id},"fkClazz":cid},
     	    		success:function(data){
     	    			if(data=='ok'){
     	    				layer.alert("添加成功",function(){

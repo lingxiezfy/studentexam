@@ -26,27 +26,25 @@
         where fk_student=#{studentId} and fk_work = #{workId}
     </select>
     <select id="statisticsSubmit" resultType="java.util.Map">
-      select w.id as workId,w.title as workTitle,
-             st.id as studentId,st.realname,
-             c.id as classId,c.cno as className,
-             ifnull(ws.id,0) as submitId,ws.file_url as submitFile,ws.sub_time as submitTime,
-             ifnull(wct.id,0) as correctId, ifnull(wct.point,0) as workPoint,wct.cor_time as correctTime
-      from (
-          select * from work_clazz
-          <where>
+        select w.id as workId,w.title as workTitle,
+        st.id as studentId,st.realname,
+        c.id as classId,c.cno as className,
+        ifnull(ws.id,0) as submitId,ws.file_url as submitFile,ws.sub_time as submitTime,
+        ifnull(wct.id,0) as correctId, ifnull(wct.point,0) as workPoint,wct.cor_time as correctTime
+        from work_clazz as wc
+        inner join student st on st.fk_clazz = wc.fk_clazz and st.del_flag = 0
+        left join clazz c on c.id = wc.fk_clazz
+        left join work w on wc.fk_work = w.id
+        left join work_submit ws on st.id = ws.fk_student and ws.fk_work = wc.fk_work and ws.del_flag = 0
+        left join work_correcting wct on ws.id = wct.fk_submit and wct.del_flag = 0
+        <where>
             <if test="workId != null and workId > 0 ">
-                fk_work = #{workId}
+                wc.fk_work = #{workId}
             </if>
             <if test="classId != null and classId > 0 ">
-                and fk_clazz = #{classId}
+                and wc.fk_clazz = #{classId}
             </if>
-          </where>
-          ) as wc
-                 inner join student st on st.fk_clazz = wc.fk_clazz and st.del_flag = 0
-                 left join clazz c on c.id = wc.fk_clazz
-                 left join work w on wc.fk_work = w.id
-                 left join work_submit ws on st.id = ws.fk_student and ws.del_flag = 0
-                 left join work_correcting wct on ws.id = wct.fk_submit and wct.del_flag = 0
+        </where>
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
