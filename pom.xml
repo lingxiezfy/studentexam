@@ -18,7 +18,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
   <!--自定义-->
-    <springframework.version>4.1.6.RELEASE</springframework.version>
+    <springframework.version>5.2.20.RELEASE</springframework.version>
     <slf4j-log4j12.version>1.7.12</slf4j-log4j12.version>
     <aspectjweaver.version>1.8.2</aspectjweaver.version>
     <mysql-connector-java.version>5.1.30</mysql-connector-java.version>
